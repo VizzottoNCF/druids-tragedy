@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b564f0c7055463448a72604320ae314d, type: 3}
+  m_Name: DanoArea
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
+  <Title>k__BackingField: DanoArea
+  <Description>k__BackingField: Deal 10 dmg to all enemies
+  <Sequence>k__BackingField: 2
+  <Image>k__BackingField: {fileID: -9011324600712925858, guid: 05a235e6f7723084b9eeb3ca257a185c, type: 3}
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 1566117211408957441
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 1566117211408957441
+      type: {class: AutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1566117211408957442
+        <Effect>k__BackingField:
+          rid: 1566117211408957443
+    - rid: 1566117211408957442
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1566117211408957443
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        DamageAmount: 10
