@@ -13,14 +13,18 @@ public class DamageSystem : Singleton<DamageSystem>
 
     private void OnDisable()
     {
-        ActionSystem.DetachPerformer<DealDamageGA>();        
+        ActionSystem.DetachPerformer<DealDamageGA>();
     }
     private IEnumerator DealDamagePerformer(DealDamageGA dealDamageGA)
     {
+        if (!dealDamageGA.QTESuccess) { yield break; }
         foreach (var target in dealDamageGA.Targets)
         {
+            if (target == null) continue;
+            Vector3 pos = new Vector3(target.transform.position.x, target.transform.position.y, target.transform.position.z);
             target.Damage(dealDamageGA.Amount);
-            Instantiate(damageVFX, target.transform.position, Quaternion.identity);
+
+            Instantiate(damageVFX, pos, Quaternion.identity);
             yield return new WaitForSeconds(0.15f);
 
             if (target.CurrentHealth <= 0)

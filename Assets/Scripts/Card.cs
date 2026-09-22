@@ -10,6 +10,7 @@ public class Card
     public Sprite Image => data.Image;
     public Effect ManualEffect => data.ManualTargetEffect;
     public List<AutoTargetEffect> OtherEffects => data.OtherEffects;
+    public List<KeyCode> KeySequence => data.KeySequence;
 
     public int Sequence;
 

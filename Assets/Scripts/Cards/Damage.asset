@@ -15,7 +15,8 @@ MonoBehaviour:
   <Title>k__BackingField: Dano
   <Description>k__BackingField: Deals 2 dmg
   <Sequence>k__BackingField: 0
-  <Image>k__BackingField: {fileID: -5083066459528639959, guid: 04da22fd5350415499168705e9e0743f, type: 3}
+  <KeySequence>k__BackingField: 1301000013010000
+  <Image>k__BackingField: {fileID: 21300000, guid: f27a60715de68334b8018697538b735e, type: 3}
   <ManualTargetEffect>k__BackingField:
     rid: 1566117211408957445
   <OtherEffects>k__BackingField: []

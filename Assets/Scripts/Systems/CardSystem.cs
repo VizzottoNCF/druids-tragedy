@@ -60,18 +60,53 @@ public class CardSystem : Singleton<CardSystem>
             drawPile.Add(card);
         }
     }
+    public IEnumerator PlaceCardInTray(Card card, EnemyView target, GameObject view)
+    {
+        if (handManager == null) handManager = ServiceLocator.Get<HandManager>();
+
+        // setups visuals
+        StartCoroutine(handManager.TrayCard(view));
+
+        // spends mana for the card
+        SpendManaGA spendManaGA = new(card.Sequence);
+        ActionSystem.Instance.Perform(spendManaGA);
+
+        // adds card to the tray
+        CardTraySystem.Instance.CardTray.Add(new(card, target));
+        yield return null;
+    }
+    public IEnumerator RemoveCardFromTray(Card card, GameObject view)
+    {
+        if (handManager == null) handManager = ServiceLocator.Get<HandManager>();
+        StartCoroutine(handManager.UntrayCard(view));
+        
+        SpendManaGA spendManaGA = new(-card.Sequence);
+        ActionSystem.Instance.Perform(spendManaGA);
+
+        foreach (CardTray tray in CardTraySystem.Instance.CardTray)
+        {
+            Debug.Log($"Tray Entry | Card: {tray.Card.Title} | " + $"Card Match: {tray.Card == card}");
+        }
+
+        CardTraySystem.Instance.CardTray.RemoveAll(c => c.Card == card);
+
+        Debug.Log($"Tray now contains {CardTraySystem.Instance.CardTray.Count} cards");
+
+
+        yield return null;
+    }
 
     private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
     {
         if (handManager == null) handManager = ServiceLocator.Get<HandManager>();
 
         hand.Remove(playCardGA.Card);
-        StartCoroutine(handManager.PlayCard(handManager.SelectedCard));
+        //StartCoroutine(handManager.PlayCard(handManager.SelectedCard));
 
-        SpendManaGA spendManaGA = new(playCardGA.Card.Sequence);
-        ActionSystem.Instance.AddReaction(spendManaGA);
+        //SpendManaGA spendManaGA = new(playCardGA.Card.Sequence);
+        //ActionSystem.Instance.AddReaction(spendManaGA);
 
-        QuickTimeEventSystem.Instance.PlayedCards.Add(playCardGA.Card);
+        //QuickTimeEventSystem.Instance.PlayedCards.Add(playCardGA.Card);
 
         if (playCardGA.Card.ManualEffect != null)
         {
@@ -114,7 +149,7 @@ public class CardSystem : Singleton<CardSystem>
         if (handManager == null) handManager = ServiceLocator.Get<HandManager>();
 
 
-
+        var trayCardsCopy = handManager.trayCards.ToList();
         var handCardsCopy = handManager.handCards.ToList();
         foreach (var card in handCardsCopy) // Iterate over the copied list to modify original list safely
         {
@@ -123,8 +158,16 @@ public class CardSystem : Singleton<CardSystem>
             StartCoroutine(handManager.RemoveCard(card, discardPilePoint.position, discardPilePoint.rotation, true));
         }
 
+        foreach (var card in trayCardsCopy) // Iterate over the copied list to modify original list safely
+        {
+            // played cards don't go to the discard pile
+            hand.Remove(card.GetComponent<CardView>().Card);
+            StartCoroutine(handManager.RemoveCardTray(card));
+        }
+
         hand.Clear();
         handManager.handCards.Clear();
+        handManager.trayCards.Clear();
         yield return null;
     }
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
@@ -132,16 +175,6 @@ public class CardSystem : Singleton<CardSystem>
         // discard all cards and trigger QTEs
         DiscardAllCardsGA discardAllCardsGA = new();
         ActionSystem.Instance.AddReaction(discardAllCardsGA);
-
-
-        //QuickTimeEventGA quickTimeGA = new(ListDeCartas);
-        //ActionSystem.Instance
-        // buff do efeito --> efeito adicional
-            // efeito adicionais
-            // - aumenta dano no próx round
-            // - aumenta defesa no próx round
-            // - causa dano em todos inimigos(?)
-            // - causa um debuff em todos inimigos
     }
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {

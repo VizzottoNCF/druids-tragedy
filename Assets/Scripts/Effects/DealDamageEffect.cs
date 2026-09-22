@@ -6,9 +6,9 @@ using UnityEngine;
 public class DealDamageEffect : Effect
 {
     [SerializeField] private int DamageAmount;
-    public override GameAction GetGameAction(List<CombatantView> targets)
+    public override GameAction GetGameAction(List<CombatantView> targets, CombatantView caster)
     {
-        DealDamageGA dealDamageGA = new(DamageAmount, targets);
+        DealDamageGA dealDamageGA = new(DamageAmount, targets, caster, QuickTimeEventSystem.Instance.succededQTE);
         return dealDamageGA;
     }
 }

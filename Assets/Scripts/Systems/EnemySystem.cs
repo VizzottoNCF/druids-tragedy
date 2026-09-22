@@ -32,17 +32,15 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private IEnumerator EnemyTurnPerformer(EnemyTurnGA action)
     {
-        Debug.Log("Enemy turn start.");
+        //Debug.Log("Enemy turn start.");
         foreach (var enemy in enemyBoardView.EnemyViews)
         {
-            Debug.Log($"{enemy.gameObject.name}'s turn");
+            //Debug.Log($"{enemy.gameObject.name}'s turn");
             AttackHeroGA attackHeroGA = new(enemy);
             ActionSystem.Instance.AddReaction(attackHeroGA);
             yield return new WaitForSeconds(0.1f);
         }
 
-                
-        Debug.Log("Enemy turn finished.");
         yield return null;
     }
     private IEnumerator AttackHeroPerformer(AttackHeroGA attackHeroGA)
@@ -54,7 +52,7 @@ public class EnemySystem : Singleton<EnemySystem>
         yield return tween.WaitForCompletion();
         attacker.transform.DOMove(originalPos, 0.15f);
 
-        DealDamageGA dealDamageGA = new(attacker.AttackPower, new() { HeroSystem.Instance.heroView });
+        DealDamageGA dealDamageGA = new(attacker.AttackPower, new() { HeroSystem.Instance.heroView }, attackHeroGA.Caster);
         ActionSystem.Instance.AddReaction(dealDamageGA);
     }
     private IEnumerator KillEnemyPerformer(KillEnemyGA killEnemyGA)

@@ -14,67 +14,53 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
     private List<KeyCode> currentSequence = new List<KeyCode>();
     private KeyCode pressedKey = KeyCode.None;
 
+    public bool succededQTE = true;
+
 
     private void OnEnable()
     {
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
         ActionSystem.AttachPerformer<QuickTimeEventGA>(QuickTimeEventPerformer);
+        ActionSystem.SubscribeReaction<PlayCardGA>(PlayCardPreReaction, ReactionTiming.PRE);
     }
     private void OnDisable()
     {
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
         ActionSystem.DetachPerformer<QuickTimeEventGA>();
+        ActionSystem.UnsubscribeReaction<PlayCardGA>(PlayCardPreReaction, ReactionTiming.PRE);
     }
-    private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
+    private void PlayCardPreReaction(PlayCardGA playCardGA)
     {
+        // clear QTEs, and add new qte to system
+        PlayedCards.Clear();
+        PlayedCards.Add(playCardGA.Card);
+
+        // play qte
         QuickTimeEventGA quickTimeEventGA = new(PlayedCards);
         ActionSystem.Instance.AddReaction(quickTimeEventGA);
     }
-    private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
-    {
-        // clear played cards list
-        PlayedCards.Clear();
-    }
     public IEnumerator QuickTimeEventPerformer(QuickTimeEventGA quickTimeEventGA)
     {
-        // stop qte if you haven't played cards, or only played free cards
-        // and also setup timer for qte
+        // if there no cards played, break
         if (quickTimeEventGA.Cards.Count == 0) { yield break; }
-        int total = 0;
+        
+        // timer setup
         int timeFlux = 0;
         foreach (var card in quickTimeEventGA.Cards)
         {
-            total += card.Sequence;
-            if (card.Sequence > 0) timeFlux++;
+            timeFlux++;
         }
-        if (total == 0) { yield break; }
 
-        TimeLimit = 99f + timeFlux;
+        TimeLimit = 5f + timeFlux;
 
 
-        // clear any remaining sequence and set a new one
+        // clear any remaining sequence and add the keys to the qte sequence
         currentSequence.Clear();
         foreach (var card in quickTimeEventGA.Cards)
         {
-            List<KeyCode> cardKey = new List<KeyCode>();
-            if (card.Sequence != 0)
-            {
-                for (int i = 0; i < card.Sequence; i++)
-                {
-                    KeyCode k = keyInputs[Random.Range(0, keyInputs.Count)];
-                    cardKey.Add(k);
-                    //Debug.Log($"Added {k.ToString()}");
-                }
 
-                currentSequence.AddRange(cardKey);
-            }
-
-            // space keycode = divisor
-            currentSequence.Add(KeyCode.Space);
+            // add Keys to currentSequence
+            card.KeySequence.ForEach(k => currentSequence.Add(k));
         }
-        currentSequence.RemoveAt(currentSequence.Count - 1); // removes last divisor inserted
+
 
         // setup variables
         skillCheckUI.Setup(currentSequence);
@@ -83,9 +69,7 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
         float elapsedTime = 0f;
 
 
-        Debug.Log($"Sequence count {currentSequence.Count}");
-
-        for (int i = 0; i < currentSequence.Count; i++)
+        for (int i = 0; i < (currentSequence.Count); i++)
         {
             pressedKey = KeyCode.None;
             bool keyPressed = false;
@@ -141,8 +125,6 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
     private void OnKeyCorrect(int currentKeyIndex)
     {
         skillCheckUI.ChangeKeyColor(currentKeyIndex, Color.green);
-        Debug.Log($"Correct! Pressed: {currentSequence[currentKeyIndex]}");
-
 
         // Play correct sound/effect
     }
@@ -152,17 +134,19 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
         if (key == KeyCode.None) Debug.Log("QTE Failed. Timed out");
         else Debug.Log($"QTE Failed. Pressed {key.ToString()}");
 
+        succededQTE = false;
+
         skillCheckUI.ClearQTE();
         ShowQTEPrompt(false);
-        // Play fail sound/effect
     }
 
     private void OnQTESuccess()
     {
         Debug.Log("QTE Complete Successfully!");
 
+        succededQTE = true;
+
         skillCheckUI.ClearQTE();
         ShowQTEPrompt(false);
-        // Play success sound/effect | Card will now be played
     }
 }

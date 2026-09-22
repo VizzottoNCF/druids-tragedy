@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5141b8938f0117e4dba96c3cb2c3349e, type: 3}
   m_Name: Default
   m_EditorClassIdentifier: Assembly-CSharp::HeroData
-  <Image>k__BackingField: {fileID: 3963103211916885951, guid: ff1b0c60436425c40b1f89b38a224151, type: 3}
-  <Health>k__BackingField: 44
+  <Image>k__BackingField: {fileID: 21300000, guid: 4068f7ff758bdbf4ba40088a4b64e3e5, type: 3}
+  <Health>k__BackingField: 100
   <Deck>k__BackingField:
   - {fileID: 11400000, guid: c6ea1d082f11bbd4fa9810f4cb327f21, type: 2}
   - {fileID: 11400000, guid: c6ea1d082f11bbd4fa9810f4cb327f21, type: 2}

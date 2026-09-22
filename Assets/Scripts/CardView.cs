@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 public class CardView : MonoBehaviour
 {
     [SerializeField] private TMP_Text cardName;
@@ -11,6 +12,7 @@ public class CardView : MonoBehaviour
     [SerializeField] private LayerMask dropLayer;
 
     public Card Card { get; private set; }
+    public bool inTray { get; private set; }
     private Vector3 dragStartPosition;
     private Quaternion dragStartRotation;
 
@@ -21,44 +23,63 @@ public class CardView : MonoBehaviour
         cardDescription.text = Card.Description;
         cardSequence.text = Card.Sequence.ToString();
         imageSR.sprite = Card.Image;
+        inTray = false;
     }
 
     public void OnMouseEnter()
     {
         if (!Interactions.Instance.PlayerCanHover()) return;
 
-        Wrapper.SetActive(false);
-        Vector3 pos = new(transform.position.x, 0, transform.position.z);
-        ServiceLocator.Get<CardViewHoverSystem>().Show(Card, pos);
+        if (!inTray)
+        {
+            Wrapper.SetActive(false);
+            Vector3 pos = new(transform.position.x, 0, transform.position.z);
+            ServiceLocator.Get<CardViewHoverSystem>().Show(Card, pos);
+        }
+
     }
     public void OnMouseExit()
     {
         if (!Interactions.Instance.PlayerCanHover()) return;
 
-        ServiceLocator.Get<CardViewHoverSystem>().Hide();
-        Wrapper.SetActive(true);
+        if (!inTray)
+        {
+            ServiceLocator.Get<CardViewHoverSystem>().Hide();
+            Wrapper.SetActive(true);
+        }
     }
 
     public void OnMouseDown()
     {
         if (!Interactions.Instance.PlayerCanInteract()) return;
-        HandManager hm = ServiceLocator.Get<HandManager>();
-        hm.SelectedCard = this.gameObject;
 
-        if (Card.ManualEffect != null)
+        if (inTray)
         {
-            ManualTargetSystem.Instance.StartTargetting(transform.position);
+            // take off card from tray and put it back in hand
+            Debug.Log($"Removing {Card.Title} from tray");
+            StartCoroutine(CardSystem.Instance.RemoveCardFromTray(Card, this.gameObject));
+            inTray = false;
         }
         else
         {
-            Interactions.Instance.PlayerIsDragging = true;
-            Wrapper.SetActive(true);
-            ServiceLocator.Get<CardViewHoverSystem>().Hide();
-            dragStartPosition = transform.position;
-            dragStartRotation = transform.rotation;
+            HandManager hm = ServiceLocator.Get<HandManager>();
+            hm.SelectedCard = this.gameObject;
 
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-            transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+            if (Card.ManualEffect != null)
+            {
+                ManualTargetSystem.Instance.StartTargetting(transform.position);
+            }
+            else
+            {
+                Interactions.Instance.PlayerIsDragging = true;
+                Wrapper.SetActive(true);
+                ServiceLocator.Get<CardViewHoverSystem>().Hide();
+                dragStartPosition = transform.position;
+                dragStartRotation = transform.rotation;
+
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+            }
         }
     }
     private void OnMouseDrag()
@@ -72,29 +93,35 @@ public class CardView : MonoBehaviour
     private void OnMouseUp()
     {
         if (!Interactions.Instance.PlayerCanInteract()) return;
-
+        if (inTray) return;
         if (Card.ManualEffect != null)
         {
             EnemyView target = ManualTargetSystem.Instance.EndTargetting(MouseUtil.GetMousePositionInWorldSpace(-1));
             if (target != null && ManaSystem.Instance.HasEnoughMana(Card.Sequence))
             {
-                PlayCardGA playCardGA = new(Card, target);
-                ActionSystem.Instance.Perform(playCardGA);
+                // swaps cards from hand to tray
+                StartCoroutine(CardSystem.Instance.PlaceCardInTray(Card, target, this.gameObject));
+                inTray = true;
+
+                // play card script is in CardTraySystem, which will be called as a pre reaction to enemy turn
             }
         }
         else
-        { 
+        {
             if (ManaSystem.Instance.HasEnoughMana(Card.Sequence) && Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, dropLayer))
             {
-                PlayCardGA playCardGA = new PlayCardGA(Card);
-                ActionSystem.Instance.Perform(playCardGA);
+                // swaps cards from hand to tray
+                StartCoroutine(CardSystem.Instance.PlaceCardInTray(Card, null, this.gameObject));
+                inTray = true;
+
+                // play card script is in CardTraySystem, which will be called as a pre reaction to enemy turn
             }
             else
             {
                 transform.position = dragStartPosition;
                 transform.rotation = dragStartRotation;
             }
-            Interactions.Instance.PlayerIsDragging = false;        
+            Interactions.Instance.PlayerIsDragging = false;
         }
     }
 }
