@@ -58,6 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 737532b0add353d4796a3743023c1453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PerkUI
+  image: {fileID: 4401598626777804318}
 --- !u!114 &4401598626777804318
 MonoBehaviour:
   m_ObjectHideFlags: 0

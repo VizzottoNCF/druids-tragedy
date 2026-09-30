@@ -131,9 +131,6 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
 
     private void OnKeyWrong(KeyCode key = KeyCode.None)
     {
-        if (key == KeyCode.None) Debug.Log("QTE Failed. Timed out");
-        else Debug.Log($"QTE Failed. Pressed {key.ToString()}");
-
         succededQTE = false;
 
         skillCheckUI.ClearQTE();
@@ -142,8 +139,6 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
 
     private void OnQTESuccess()
     {
-        Debug.Log("QTE Complete Successfully!");
-
         succededQTE = true;
 
         skillCheckUI.ClearQTE();

@@ -12,16 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b564f0c7055463448a72604320ae314d, type: 3}
   m_Name: Armor Up
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  <Title>k__BackingField: Defesa
+  <Title>k__BackingField: Escudo
   <Description>k__BackingField: Add 5 armor
   <Sequence>k__BackingField: 0
   <KeySequence>k__BackingField: 1401000014010000
-  <Image>k__BackingField: {fileID: 0}
+  <Image>k__BackingField: {fileID: 21300000, guid: b606310c2b43ed64e94e4bf8c15db360, type: 3}
   <ManualTargetEffect>k__BackingField:
     rid: -2
-  <OtherEffects>k__BackingField: []
+  <OtherEffects>k__BackingField:
+  - rid: 8963080762611990627
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 8963080762611990627
+      type: {class: AutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 8963080762611990628
+        <Effect>k__BackingField:
+          rid: 8963080762611990629
+    - rid: 8963080762611990628
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 8963080762611990629
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 5

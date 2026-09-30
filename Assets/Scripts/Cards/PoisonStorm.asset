@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b564f0c7055463448a72604320ae314d, type: 3}
+  m_Name: PoisonStorm
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
+  <Title>k__BackingField: Poison Storm
+  <Description>k__BackingField: poison all enemies
+  <Sequence>k__BackingField: 1
+  <KeySequence>k__BackingField: 14010000130100001401000013010000
+  <Image>k__BackingField: {fileID: 21300000, guid: 5306cb39c4377b2489c8aa45bf89bb53, type: 3}
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 8963080762611990673
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 8963080762611990673
+      type: {class: AutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 8963080762611990674
+        <Effect>k__BackingField:
+          rid: 8963080762611990675
+    - rid: 8963080762611990674
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 8963080762611990675
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 1
+        stackCount: 3

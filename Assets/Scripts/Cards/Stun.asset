@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b564f0c7055463448a72604320ae314d, type: 3}
+  m_Name: Stun
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
+  <Title>k__BackingField: Stun
+  <Description>k__BackingField: Stuns enemy for 1 round
+  <Sequence>k__BackingField: 1
+  <KeySequence>k__BackingField: 12010000140100001101000013010000
+  <Image>k__BackingField: {fileID: 21300000, guid: f27a60715de68334b8018697538b735e, type: 3}
+  <ManualTargetEffect>k__BackingField:
+    rid: 8963080762611990672
+  <OtherEffects>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 8963080762611990672
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 2
+        stackCount: 1

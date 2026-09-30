@@ -17,4 +17,13 @@ public class CardViewCreator : MonoBehaviour
 
         return cv;
     }
+
+    public CardView CreateCardViewUI(Card card, Transform parent)
+    {
+        CardView cv = Instantiate(cardViewPrefab, parent);
+
+        cv.Setup(card);
+
+        return cv;
+    }
 }

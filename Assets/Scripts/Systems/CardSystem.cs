@@ -40,16 +40,13 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.AttachPerformer<DrawCardGA>(DrawCardPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardsGA>(DiscardAllCardsPerformer);
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
     private void OnDisable()
     {
         ActionSystem.DetachPerformer<DrawCardGA>();
         ActionSystem.DetachPerformer<DiscardAllCardsGA>();
         ActionSystem.DetachPerformer<PlayCardGA>();
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        
     }
 
     public void Setup(List<CardData> deckData)
@@ -83,15 +80,7 @@ public class CardSystem : Singleton<CardSystem>
         SpendManaGA spendManaGA = new(-card.Sequence);
         ActionSystem.Instance.Perform(spendManaGA);
 
-        foreach (CardTray tray in CardTraySystem.Instance.CardTray)
-        {
-            Debug.Log($"Tray Entry | Card: {tray.Card.Title} | " + $"Card Match: {tray.Card == card}");
-        }
-
         CardTraySystem.Instance.CardTray.RemoveAll(c => c.Card == card);
-
-        Debug.Log($"Tray now contains {CardTraySystem.Instance.CardTray.Count} cards");
-
 
         yield return null;
     }
@@ -101,12 +90,12 @@ public class CardSystem : Singleton<CardSystem>
         if (handManager == null) handManager = ServiceLocator.Get<HandManager>();
 
         hand.Remove(playCardGA.Card);
-        //StartCoroutine(handManager.PlayCard(handManager.SelectedCard));
 
-        //SpendManaGA spendManaGA = new(playCardGA.Card.Sequence);
-        //ActionSystem.Instance.AddReaction(spendManaGA);
-
-        //QuickTimeEventSystem.Instance.PlayedCards.Add(playCardGA.Card);
+        if (!QuickTimeEventSystem.Instance.succededQTE) 
+        {
+            Debug.Log("QTE Failed. Card was lost");
+            yield break; 
+        }
 
         if (playCardGA.Card.ManualEffect != null)
         {
@@ -170,18 +159,7 @@ public class CardSystem : Singleton<CardSystem>
         handManager.trayCards.Clear();
         yield return null;
     }
-    private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
-    {
-        // discard all cards and trigger QTEs
-        DiscardAllCardsGA discardAllCardsGA = new();
-        ActionSystem.Instance.AddReaction(discardAllCardsGA);
-    }
-    private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
-    {
-        // draw cards
-        DrawCardGA drawCardGA = new(5);
-        ActionSystem.Instance.AddReaction(drawCardGA);
-    }
+    
     private IEnumerator DrawCard()
     {
         if (handManager == null) handManager = ServiceLocator.Get<HandManager>();

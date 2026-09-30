@@ -17,7 +17,6 @@ public class DamageSystem : Singleton<DamageSystem>
     }
     private IEnumerator DealDamagePerformer(DealDamageGA dealDamageGA)
     {
-        if (!dealDamageGA.QTESuccess) { yield break; }
         foreach (var target in dealDamageGA.Targets)
         {
             if (target == null) continue;
@@ -27,17 +26,22 @@ public class DamageSystem : Singleton<DamageSystem>
             Instantiate(damageVFX, pos, Quaternion.identity);
             yield return new WaitForSeconds(0.15f);
 
-            if (target.CurrentHealth <= 0)
+            CheckKillTarget(target);
+        }
+    }
+
+    public void CheckKillTarget(CombatantView target)
+    {
+        if (target.CurrentHealth <= 0)
+        {
+            if (target is EnemyView enemyView)
             {
-                if (target is EnemyView enemyView)
-                {
-                    KillEnemyGA killEnemyGA = new(enemyView);
-                    ActionSystem.Instance.AddReaction(killEnemyGA);
-                }
-                else
-                {
-                    Debug.Log("Game over logic");
-                }
+                KillEnemyGA killEnemyGA = new(enemyView);
+                ActionSystem.Instance.AddReaction(killEnemyGA);
+            }
+            else
+            {
+                Debug.Log("Game over logic");
             }
         }
     }

@@ -11,31 +11,52 @@ public class CombatantView : MonoBehaviour
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
     private Dictionary<StatusEffectType, int> statusEffects = new();
-    public int Defense { get; set; }
-    protected void SetupBase(int health, Sprite image, int defense = 0)
+    protected void SetupBase(int health, Sprite image)
     {
         MaxHealth = health;
         CurrentHealth = MaxHealth;
-        Defense = defense;
         spriteRenderer.sprite = image;
         UpdateHealthText();
     }
-    public void UpdateDefense(int newDefense) => Defense = newDefense;
+    protected void SetupBase(int health, int currentHealth, Sprite image)
+    {
+        MaxHealth = health;
+        CurrentHealth = currentHealth;
+        spriteRenderer.sprite = image;
+        UpdateHealthText();
+    }
     private void UpdateHealthText() => healthText.text = $"HP: {CurrentHealth}";
     public void Damage(int damageAmount)
     {
         if (this == null) return;
 
-        damageAmount -= Defense;
+        // subtract armor from damage amount
+        int remainingDamage = damageAmount;
+        int currentArmor = GetStatusEffectStackCount(StatusEffectType.ARMOR);
+        if (currentArmor > 0)
+        {
+            if (currentArmor >= damageAmount)
+            {
+                RemoveStatusEffect(StatusEffectType.ARMOR, remainingDamage);
+                remainingDamage = 0;
+            }
+            else if (currentArmor < damageAmount)
+            {
+                RemoveStatusEffect(StatusEffectType.ARMOR, currentArmor);
+                remainingDamage -= currentArmor;
+            }
+        }
 
-        if (damageAmount < 0) { damageAmount = 0; }
-
-        CurrentHealth -= damageAmount;
-        if (CurrentHealth < 0) { CurrentHealth = 0; }
-        { transform.DOShakePosition(0.2f, 0.5f); }
-
+        // apply remaining damage to health
+        if (remainingDamage > 0)
+        {
+            CurrentHealth -= remainingDamage;
+            if (CurrentHealth < 0) { CurrentHealth = 0; }
+            { transform.DOShakePosition(0.2f, 0.5f); }
+        }
         UpdateHealthText();
     }
+
     public void AddStatusEffect(StatusEffectType type, int stackCount)
     {
         if (statusEffects.ContainsKey(type))

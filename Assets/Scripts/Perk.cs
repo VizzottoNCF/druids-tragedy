@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class Perk
 {
-    public Sprite Image => data.Image;
+    public Sprite Image;
     private readonly PerkData data;
     private readonly PerkCondition condition;
     private readonly AutoTargetEffect effect;
@@ -11,6 +11,7 @@ public class Perk
         data = perkData;
         condition = data.PerkCondition;
         effect = data.AutoTargetEffect;
+        Image = data.Image;
     }
     public void OnAdd()
     {

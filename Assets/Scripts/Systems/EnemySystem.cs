@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemySystem : Singleton<EnemySystem>
@@ -12,6 +13,7 @@ public class EnemySystem : Singleton<EnemySystem>
         ActionSystem.AttachPerformer<EnemyTurnGA>(EnemyTurnPerformer);
         ActionSystem.AttachPerformer<AttackHeroGA>(AttackHeroPerformer);
         ActionSystem.AttachPerformer<KillEnemyGA>(KillEnemyPerformer);
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
     private void OnDisable()
@@ -19,11 +21,12 @@ public class EnemySystem : Singleton<EnemySystem>
         ActionSystem.DetachPerformer<EnemyTurnGA>();
         ActionSystem.DetachPerformer<AttackHeroGA>();
         ActionSystem.DetachPerformer<KillEnemyGA>();
+        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
-    public void Setup(List<EnemyData> enemyData)
+    public void Setup(EnemyWave enemyData)
     {
-        foreach (EnemyData enemy in enemyData)
+        foreach (EnemyData enemy in enemyData.enemyDatas)
         {
             enemyBoardView.AddEnemy(enemy);
         }
@@ -32,21 +35,43 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private IEnumerator EnemyTurnPerformer(EnemyTurnGA action)
     {
-        //Debug.Log("Enemy turn start.");
         foreach (var enemy in enemyBoardView.EnemyViews)
         {
-            //Debug.Log($"{enemy.gameObject.name}'s turn");
+            // apply burn
+            int burnStacks = enemy.GetStatusEffectStackCount(StatusEffectType.BURN);
+            if (burnStacks > 0)
+            {
+                ApplyBurnGA applyBurnGA = new(burnStacks, enemy);
+                ActionSystem.Instance.AddReaction(applyBurnGA);
+
+                if (enemy == null) continue;
+            }
+
+            // apply stun
+            // always apply stun last of all effects
+            int stunStacks = enemy.GetStatusEffectStackCount(StatusEffectType.STUN);
+            if (stunStacks > 0)
+            {
+                ApplyStunGA applyStunGA = new(stunStacks, enemy);
+                ActionSystem.Instance.AddReaction(applyStunGA);
+                yield return new WaitForSeconds(0.1f);
+                continue;
+            }
+
+            // attack hero
             AttackHeroGA attackHeroGA = new(enemy);
             ActionSystem.Instance.AddReaction(attackHeroGA);
             yield return new WaitForSeconds(0.1f);
         }
-
         yield return null;
     }
     private IEnumerator AttackHeroPerformer(AttackHeroGA attackHeroGA)
     {
         EnemyView attacker = attackHeroGA.Attacker;
-        Vector3 targetPos = new(0,0,0);
+        if (attacker == null) { yield break; }
+
+
+        Vector3 targetPos = new(0,-2,0);
         Vector3 originalPos = attacker.transform.position;
         Tween tween = attacker.transform.DOMove(targetPos, 0.15f);
         yield return tween.WaitForCompletion();
@@ -58,5 +83,13 @@ public class EnemySystem : Singleton<EnemySystem>
     private IEnumerator KillEnemyPerformer(KillEnemyGA killEnemyGA)
     {
         yield return enemyBoardView.RemoveEnemy(killEnemyGA.EnemyView);
+    }
+
+    private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
+    {
+        if (enemyBoardView.EnemyViews.Count == 0)
+        {
+            Debug.Log("No enemies left");
+        }
     }
 }

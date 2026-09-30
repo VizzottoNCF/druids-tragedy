@@ -35,18 +35,9 @@ public class CardTraySystem : Singleton<CardTraySystem>
     }
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
     {
-
         // play all cards in tray and register them in qte
         foreach (var card in CardTray)
-        {
-            //// clear QTEs, and add new qte to system
-            //QuickTimeEventSystem.Instance.PlayedCards.Clear();
-            //QuickTimeEventSystem.Instance.PlayedCards.Add(card.Card);
-            
-            //// play qte
-            //QuickTimeEventGA quickTimeEventGA = new(QuickTimeEventSystem.Instance.PlayedCards);
-            //ActionSystem.Instance.AddReaction(quickTimeEventGA);
-            
+        {    
             // create play card game action
             PlayCardGA playCardGA = new(card.Card, card.ManualTarget);
             ActionSystem.Instance.AddReaction(playCardGA);

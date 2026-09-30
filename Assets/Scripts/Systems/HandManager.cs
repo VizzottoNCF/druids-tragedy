@@ -107,9 +107,7 @@ public class HandManager : MonoBehaviour
     }
     public IEnumerator UntrayCard(GameObject card)
     {
-        Debug.Log($"Untraying card /PRENULL");
         if (card == null) { Debug.LogError("CARD IS NULL"); yield break; }
-        Debug.Log($"Untraying card /POSTNULL");
         handCards.Add(card);
         trayCards.Remove(card);
 

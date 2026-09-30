@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 public class CardView : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class CardView : MonoBehaviour
     [SerializeField] private TMP_Text cardDescription;
     [SerializeField] private TMP_Text cardSequence;
     [SerializeField] private SpriteRenderer imageSR;
+    [SerializeField] private Image image;
 
     [SerializeField] private GameObject Wrapper;
     [SerializeField] private LayerMask dropLayer;
@@ -22,7 +24,8 @@ public class CardView : MonoBehaviour
         cardName.text = Card.Title;
         cardDescription.text = Card.Description;
         cardSequence.text = Card.Sequence.ToString();
-        imageSR.sprite = Card.Image;
+        if (imageSR != null) { imageSR.sprite = Card.Image; }
+        if (image != null) { image.sprite = Card.Image; }
         inTray = false;
     }
 
@@ -56,7 +59,6 @@ public class CardView : MonoBehaviour
         if (inTray)
         {
             // take off card from tray and put it back in hand
-            Debug.Log($"Removing {Card.Title} from tray");
             StartCoroutine(CardSystem.Instance.RemoveCardFromTray(Card, this.gameObject));
             inTray = false;
         }
@@ -94,10 +96,11 @@ public class CardView : MonoBehaviour
     {
         if (!Interactions.Instance.PlayerCanInteract()) return;
         if (inTray) return;
+        HandManager service = ServiceLocator.Get<HandManager>();
         if (Card.ManualEffect != null)
         {
             EnemyView target = ManualTargetSystem.Instance.EndTargetting(MouseUtil.GetMousePositionInWorldSpace(-1));
-            if (target != null && ManaSystem.Instance.HasEnoughMana(Card.Sequence))
+            if (target != null && ManaSystem.Instance.HasEnoughMana(Card.Sequence) && service.trayCards.Count < service.MaxTraySize)
             {
                 // swaps cards from hand to tray
                 StartCoroutine(CardSystem.Instance.PlaceCardInTray(Card, target, this.gameObject));
@@ -108,7 +111,7 @@ public class CardView : MonoBehaviour
         }
         else
         {
-            if (ManaSystem.Instance.HasEnoughMana(Card.Sequence) && Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, dropLayer))
+            if (ManaSystem.Instance.HasEnoughMana(Card.Sequence) && Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, dropLayer) && service.trayCards.Count < service.MaxTraySize)
             {
                 // swaps cards from hand to tray
                 StartCoroutine(CardSystem.Instance.PlaceCardInTray(Card, null, this.gameObject));

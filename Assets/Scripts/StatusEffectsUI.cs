@@ -9,7 +9,7 @@ public class StatusEffectsUI : MonoBehaviour
     private Dictionary<StatusEffectType, StatusEffectUI> statusEffectUIs = new();
     public void UpdateStatusEffectUI(StatusEffectType statusEffectType, int stackCount)
     {
-        if (stackCount > 0)
+        if (stackCount == 0)
         {
             if (statusEffectUIs.ContainsKey(statusEffectType))
             {
