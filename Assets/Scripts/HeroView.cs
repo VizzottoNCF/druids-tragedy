@@ -4,6 +4,7 @@ public class HeroView : CombatantView
 {
     public void Setup(HeroData heroData)
     {
-        SetupBase(heroData.Health, heroData.Image);
+        Debug.Log($"Setting up hero view with health: {heroData.Health}, remaining health: {MatchData.Instance.HeroRemainingHealth}");
+        SetupBase(heroData.Health, MatchData.Instance.HeroRemainingHealth, heroData.Image);
     }
 }

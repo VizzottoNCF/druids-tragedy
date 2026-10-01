@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PerkSystem : Singleton<PerkSystem>
@@ -16,5 +17,11 @@ public class PerkSystem : Singleton<PerkSystem>
         perks.Remove(perk);
         perksUI.RemovePerkUI(perk);
         perk.OnRemove();
+    }
+    private void OnDisable()
+    {
+        var perksCopy = perks.ToList();
+        foreach (var perk in perksCopy) RemovePerk(perk);
+        perks.Clear();
     }
 }

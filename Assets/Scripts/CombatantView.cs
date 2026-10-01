@@ -25,6 +25,7 @@ public class CombatantView : MonoBehaviour
         spriteRenderer.sprite = image;
         UpdateHealthText();
     }
+    public int GetCurrentHealth() => CurrentHealth;
     private void UpdateHealthText() => healthText.text = $"HP: {CurrentHealth}";
     public void Damage(int damageAmount)
     {

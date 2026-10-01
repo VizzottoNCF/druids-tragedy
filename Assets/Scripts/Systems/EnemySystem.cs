@@ -90,6 +90,15 @@ public class EnemySystem : Singleton<EnemySystem>
         if (enemyBoardView.EnemyViews.Count == 0)
         {
             Debug.Log("No enemies left");
+
+            EndMatchGA endMatchGA = new(MatchSetupSystem.Instance.encounterID);
+            ActionSystem.Instance.AddReaction(endMatchGA);
+        }
+        else // refill mana is here because it kept bugging out
+        {
+            // refill mana
+            RefillManaGA refillManaGA = new();
+            ActionSystem.Instance.AddReaction(refillManaGA);
         }
     }
 }

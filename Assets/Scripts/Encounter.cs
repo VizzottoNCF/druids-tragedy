@@ -1,20 +1,29 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Encounter : MonoBehaviour
 {
+    [Header("Settings")]
+    private string encounterID;
     public EnemyWave wave;
+    public Encounter dependancy = null;
+    [Header("Rewards")]
+    public List<CardData> Rewards = new List<CardData>();
+    [Header("State")]
     public bool available = false;
     public bool complete = false;
-    public Encounter dependancy = null;
     private Collider2D collider;
     private SpriteRenderer sr;
     private LineRenderer lr;
 
     private void Start()
     {
+        encounterID = gameObject.name;
         collider = GetComponent<Collider2D>();
         sr = GetComponent<SpriteRenderer>();
         lr = GetComponent<LineRenderer>();
+
+        if (MatchData.Instance.CompletedEncounters.Contains(encounterID)) { Complete(encounterID); }
     }
 
     private void Update()
@@ -58,11 +67,15 @@ public class Encounter : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (DeckEditSystem.Instance != null && DeckEditSystem.Instance.IsEditing) return;
+
         if (available)
         {
             MatchData.Instance.PickNewEncounter(wave);
-            Complete();
-            Debug.Log($"{gameObject.name} has been complete");
+            Debug.Log($"{gameObject.name} has been chosen");
+
+            StartMatchGA startMatchGA = new(encounterID);
+            ActionSystem.Instance.Perform(startMatchGA);
         }
         else
         {
@@ -70,8 +83,13 @@ public class Encounter : MonoBehaviour
         }
     }
 
-    private void Complete()
+    public void Complete(string id)
     {
+        if (id != encounterID)
+        {
+            Debug.Log("id does not match");
+            return;
+        }
         complete = true;
 
         // create gradient
@@ -83,5 +101,11 @@ public class Encounter : MonoBehaviour
         gradient.SetKeys(colors, alphas);
 
         lr.colorGradient = gradient;
+
+        // Add() retorna false se já tinha sido oferecido antes
+        if (Rewards.Count > 0 && MatchData.Instance.RewardsClaimed.Add(encounterID))
+        {
+            DeckEditSystem.Instance.StartEdit(Rewards);
+        }
     }
 }

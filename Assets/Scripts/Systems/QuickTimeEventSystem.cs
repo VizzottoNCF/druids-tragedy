@@ -21,11 +21,13 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
     {
         ActionSystem.AttachPerformer<QuickTimeEventGA>(QuickTimeEventPerformer);
         ActionSystem.SubscribeReaction<PlayCardGA>(PlayCardPreReaction, ReactionTiming.PRE);
+        Debug.Log("ATTACHED QTE PERFORMER AND REACTION");
     }
     private void OnDisable()
     {
         ActionSystem.DetachPerformer<QuickTimeEventGA>();
         ActionSystem.UnsubscribeReaction<PlayCardGA>(PlayCardPreReaction, ReactionTiming.PRE);
+        Debug.Log("DETACHED QTE PERFORMER AND REACTION");
     }
     private void PlayCardPreReaction(PlayCardGA playCardGA)
     {

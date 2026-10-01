@@ -38,9 +38,12 @@ public class EffectSystem : MonoBehaviour
     private IEnumerator ApplyStunPerformer(ApplyStunGA applyStunGA)
     {
         CombatantView target = applyStunGA.Target;
-        GameObject vfx = Instantiate(StunVFX, target.transform.position, Quaternion.identity);
-        target.RemoveStatusEffect(StatusEffectType.STUN, 1);
-        yield return new WaitForSeconds(1f);
-        Destroy(vfx);
+        if (target != null)
+        {
+            GameObject vfx = Instantiate(StunVFX, target.transform.position, Quaternion.identity);
+            target.RemoveStatusEffect(StatusEffectType.STUN, 1);
+            yield return new WaitForSeconds(1f);
+            Destroy(vfx);
+        }
     }
 }

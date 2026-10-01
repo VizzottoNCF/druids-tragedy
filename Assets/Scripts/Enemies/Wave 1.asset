@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 3d902b71854b9f043a26c3edb4b333ed, type: 3}
   m_Name: Wave 1
   m_EditorClassIdentifier: Assembly-CSharp::EnemyWave
   enemyDatas:

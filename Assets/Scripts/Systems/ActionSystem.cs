@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ActionSystem : Singleton<ActionSystem>
@@ -10,6 +11,7 @@ public class ActionSystem : Singleton<ActionSystem>
     private static Dictionary<Type, List<Action<GameAction>>> preSubs = new();
     private static Dictionary<Type, List<Action<GameAction>>> postSubs = new();
     private static Dictionary<Type, Func<GameAction, IEnumerator>> performers = new();
+    private static readonly Dictionary<(Type, ReactionTiming, Delegate), Action<GameAction>> wrappers = new();
     public void Perform(GameAction action, System.Action OnPerformFinished = null)
     {
         if (IsPerforming) return;
@@ -17,6 +19,7 @@ public class ActionSystem : Singleton<ActionSystem>
         StartCoroutine(Flow(action, () => { IsPerforming = false; OnPerformFinished?.Invoke(); }));
     }
     public void AddReaction(GameAction gameAction) => reactions?.Add(gameAction);
+    public void KillReactions() => reactions = null;
     private IEnumerator Flow(GameAction action, Action OnFlowFinished = null)
     {
         reactions = action.PreReactions;
@@ -37,8 +40,11 @@ public class ActionSystem : Singleton<ActionSystem>
     {
         Type type = action.GetType();
 
-
-        yield return performers[type](action);
+        if (type != null && performers.ContainsKey(type))
+        {
+            yield return performers[type](action);
+        }
+        yield return null;
     }
     private void PerformSubscribers(GameAction action, Dictionary<Type, List<Action<GameAction>>> subs)
     {
@@ -53,8 +59,15 @@ public class ActionSystem : Singleton<ActionSystem>
     }
     private IEnumerator PerformReactions()
     {
-        foreach (var reaction in reactions)
+        if (reactions == null) { yield break; }
+
+        // iterate through a copy of reactions because reactions can be killed by the EndMatch GameAction
+        var reactionsCopy = reactions.ToList();
+
+        foreach (var reaction in reactionsCopy)
         {
+            if (reactions == null) { yield break; }
+
             yield return Flow(reaction);
         }
     }
@@ -68,9 +81,47 @@ public class ActionSystem : Singleton<ActionSystem>
     public static void DetachPerformer<T>() where T : GameAction
     {
         Type type = typeof(T);
-        if (performers.ContainsKey(type)) { performers.Remove(type); }
+        Debug.Log(type.Name);
+        foreach (KeyValuePair<Type, Func<GameAction, IEnumerator>> p in performers)
+        {
+            if (p.Key.Name == type.Name)
+            {
+                print($"Removing {p.Key.Name}");
+            }
+        }
+        if (performers.ContainsKey(type)) 
+        { 
+            
+            performers.Remove(type);
+            Debug.Log($"Performer removed {!performers.ContainsKey(type)}");
+        }
     }
     public static void SubscribeReaction<T>(Action<T> reaction, ReactionTiming timing) where T : GameAction
+    {
+        var key = (typeof(T), timing, (Delegate)reaction);
+        if (wrappers.ContainsKey(key)) return; // evita inscrição duplicada
+
+        Action<GameAction> wrapped = action => reaction((T)action);
+        wrappers[key] = wrapped;
+
+        var subs = timing == ReactionTiming.PRE ? preSubs : postSubs;
+        if (!subs.TryGetValue(typeof(T), out var list))
+        {
+            list = new List<Action<GameAction>>();
+            subs[typeof(T)] = list;
+        }
+        list.Add(wrapped);
+    }
+    public static void UnsubscribeReaction<T>(Action<T> reaction, ReactionTiming timing) where T : GameAction
+    {
+        var key = (typeof(T), timing, (Delegate)reaction);
+        if (!wrappers.TryGetValue(key, out var wrapped)) return;
+
+        var subs = timing == ReactionTiming.PRE ? preSubs : postSubs;
+        if (subs.TryGetValue(typeof(T), out var list)) list.Remove(wrapped);
+        wrappers.Remove(key);
+    }
+    /*public static void SubscribeReaction<T>(Action<T> reaction, ReactionTiming timing) where T : GameAction
     {
         Dictionary<Type, List<Action<GameAction>>> subs = timing == ReactionTiming.PRE ? preSubs : postSubs;
         void wrappedReaction(GameAction action) => reaction((T)action);
@@ -89,5 +140,5 @@ public class ActionSystem : Singleton<ActionSystem>
             void wrappedReaction(GameAction action) => reaction((T)action);
             subs[typeof(T)].Remove(wrappedReaction);
         }
-    }
+    }*/
 }
