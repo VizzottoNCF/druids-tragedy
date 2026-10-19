@@ -17,11 +17,15 @@ public class DamageSystem : Singleton<DamageSystem>
     }
     private IEnumerator DealDamagePerformer(DealDamageGA dealDamageGA)
     {
+        int amount = dealDamageGA.Amount;
+        if (dealDamageGA.Caster != null)
+            amount += dealDamageGA.Caster.GetStatusEffectStackCount(StatusEffectType.STRENGTH);
+
         foreach (var target in dealDamageGA.Targets)
         {
             if (target == null) continue;
-            Vector3 pos = new Vector3(target.transform.position.x, target.transform.position.y, target.transform.position.z);
-            target.Damage(dealDamageGA.Amount);
+            Vector3 pos = target.transform.position;
+            target.Damage(amount);
 
             Instantiate(damageVFX, pos, Quaternion.identity);
             yield return new WaitForSeconds(0.15f);

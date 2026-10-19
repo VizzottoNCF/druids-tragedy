@@ -5,17 +5,20 @@ public class EffectSystem : MonoBehaviour
 {
     [SerializeField] private GameObject BurnVFX;
     [SerializeField] private GameObject StunVFX;
+    private const int COUNTER_DAMAGE = 5;
     private void OnEnable()
     {
         ActionSystem.AttachPerformer<PerformEffectGA>(PerformEffectPerformer);
         ActionSystem.AttachPerformer<ApplyBurnGA>(ApplyBurnPerformer);
         ActionSystem.AttachPerformer<ApplyStunGA>(ApplyStunPerformer);
+        ActionSystem.SubscribeReaction<AttackHeroGA>(OnHeroAttackedPerformer, ReactionTiming.POST);
     }
     private void OnDisable()
     {
         ActionSystem.DetachPerformer<PerformEffectGA>();
         ActionSystem.DetachPerformer<ApplyBurnGA>();
         ActionSystem.DetachPerformer<ApplyStunGA>();
+        ActionSystem.UnsubscribeReaction<AttackHeroGA>(OnHeroAttackedPerformer, ReactionTiming.POST);
     }
     private IEnumerator PerformEffectPerformer(PerformEffectGA performEffectGA)
     {
@@ -45,5 +48,16 @@ public class EffectSystem : MonoBehaviour
             yield return new WaitForSeconds(1f);
             Destroy(vfx);
         }
+    }
+    private void OnHeroAttackedPerformer(AttackHeroGA attackGA)
+    {
+        HeroView hero = HeroSystem.Instance.heroView;
+        if (hero.GetStatusEffectStackCount(StatusEffectType.COUNTER) <= 0) return;
+        if (attackGA.Attacker == null) return;
+
+        hero.RemoveStatusEffect(StatusEffectType.COUNTER, 1);
+
+        DealDamageGA counter = new(COUNTER_DAMAGE, new() { attackGA.Attacker }, hero);
+        ActionSystem.Instance.AddReaction(counter);
     }
 }

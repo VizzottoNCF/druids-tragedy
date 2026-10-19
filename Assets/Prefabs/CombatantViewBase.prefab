@@ -284,6 +284,8 @@ MonoBehaviour:
   armorSprite: {fileID: 2593341576274945954, guid: c865606c06ac4aa4bb4f545fe6334790, type: 3}
   burnSprite: {fileID: 1384454150994141898, guid: 5cb71fd186da58349beacf6bbd7fe8fb, type: 3}
   stunSprite: {fileID: 634092043804240453, guid: c165a8443de79e3408da649c5a62a52e, type: 3}
+  counterSprite: {fileID: -9011324600712925858, guid: 05a235e6f7723084b9eeb3ca257a185c, type: 3}
+  strengthSprite: {fileID: 5830567390464881651, guid: e71ba45a5cab38040bc33573d500485e, type: 3}
 --- !u!222 &5023975492063815424
 CanvasRenderer:
   m_ObjectHideFlags: 0

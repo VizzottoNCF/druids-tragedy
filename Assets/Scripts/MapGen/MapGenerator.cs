@@ -188,19 +188,40 @@ public static class MapGenerator
     // ---------------------------------------------------------------- 4) content (waves / rewards)
     private static void AssignContent(MapConfig cfg, System.Random rng, MapData map)
     {
+        var bag = new List<RewardData>();
+
         foreach (MapNode node in map.AllNodes())
         {
             switch (node.Type)
             {
                 case RoomType.BATTLE:
                     node.Wave = PickRandom(cfg.BattleWaves, rng);
-                    node.Rewards.AddRange(PickDistinct(cfg.RewardPool, cfg.RewardsPerBattle, rng));
+
+                    RewardData reward = DrawFromBag(cfg.RewardSets, bag, rng);
+                    if (reward != null) node.Rewards.AddRange(reward.Cards);
                     break;
                 case RoomType.BOSS:
                     node.Wave = PickRandom(cfg.BossWaves, rng);
                     break;
             }
         }
+    }
+
+    // shuffle-bag: every reward is used once before any of them repeats
+    private static RewardData DrawFromBag(List<RewardData> source, List<RewardData> bag, System.Random rng)
+    {
+        if (source == null || source.Count == 0)
+        {
+            Debug.LogWarning("MapGenerator: RewardSets is empty in MapConfig");
+            return null;
+        }
+
+        if (bag.Count == 0) bag.AddRange(source);
+
+        int idx = rng.Next(bag.Count);
+        RewardData picked = bag[idx];
+        bag.RemoveAt(idx);
+        return picked;
     }
 
     private static T PickRandom<T>(List<T> list, System.Random rng)
@@ -211,22 +232,6 @@ public static class MapGenerator
             return default;
         }
         return list[rng.Next(list.Count)];
-    }
-
-    private static List<T> PickDistinct<T>(List<T> source, int amount, System.Random rng)
-    {
-        var result = new List<T>();
-        if (source == null) return result;
-
-        var pool = new List<T>(source);
-        int count = Mathf.Min(amount, pool.Count);
-        for (int i = 0; i < count; i++)
-        {
-            int idx = rng.Next(pool.Count);
-            result.Add(pool[idx]);
-            pool.RemoveAt(idx);
-        }
-        return result;
     }
 
     // ---------------------------------------------------------------- 5) layout

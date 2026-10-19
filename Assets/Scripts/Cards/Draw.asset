@@ -15,7 +15,7 @@ MonoBehaviour:
   <Title>k__BackingField: Draw
   <Description>k__BackingField: Draw 2 cards
   <Sequence>k__BackingField: 1
-  <KeySequence>k__BackingField: 1101000011010000
+  <KeySequence>k__BackingField: 110100001201000011010000
   <Image>k__BackingField: {fileID: 21300000, guid: b606310c2b43ed64e94e4bf8c15db360, type: 3}
   <ManualTargetEffect>k__BackingField:
     rid: -2

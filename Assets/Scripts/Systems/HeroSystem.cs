@@ -25,6 +25,13 @@ public class HeroSystem : Singleton<HeroSystem>
     }
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {
+        // apply strength
+        //int strengthStacks = heroView.GetStatusEffectStackCount(StatusEffectType.STRENGTH);
+        //if (strengthStacks > 0)
+        //{
+        //    heroView.RemoveStatusEffect(StatusEffectType.STRENGTH, 1);
+        //}
+
         // apply burn
         int burnStacks = heroView.GetStatusEffectStackCount(StatusEffectType.BURN);
         if (burnStacks > 0)

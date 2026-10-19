@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Armor Up
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   <Title>k__BackingField: Escudo
-  <Description>k__BackingField: Add 5 armor
+  <Description>k__BackingField: Add 10 armor
   <Sequence>k__BackingField: 0
   <KeySequence>k__BackingField: 1401000014010000
   <Image>k__BackingField: {fileID: 21300000, guid: b606310c2b43ed64e94e4bf8c15db360, type: 3}
@@ -40,4 +40,4 @@ MonoBehaviour:
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         statusEffectType: 0
-        stackCount: 5
+        stackCount: 10

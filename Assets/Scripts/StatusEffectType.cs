@@ -4,5 +4,7 @@ public enum StatusEffectType
 {
     ARMOR,
     BURN,
-    STUN
+    STUN,
+    COUNTER,
+    STRENGTH
 }

@@ -10,9 +10,11 @@ public class CameraDrag : MonoBehaviour
 
     private bool isDragging;
 
-    private void Awake()
+    private void Start()
     {
         cam = Camera.main;
+
+        transform.position = new Vector3(0f, lowerBound, -10f); // start at the bottom of the map
     }
     public void OnDrag(InputAction.CallbackContext ctx)
     {
@@ -36,7 +38,7 @@ public class CameraDrag : MonoBehaviour
         if (newPos.y < lowerBound) { newPos.y = lowerBound; }
         if (newPos.y > upperBound) { newPos.y = upperBound; }
 
-        transform.position = newPos;        
+        transform.position = newPos;
     }
 
     private Vector3 GetCameraPos(Vector3 mousePos) => Camera.main.ScreenToWorldPoint(mousePos);

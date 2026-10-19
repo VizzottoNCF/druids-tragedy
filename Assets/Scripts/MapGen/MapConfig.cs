@@ -32,8 +32,7 @@ public class MapConfig : ScriptableObject
     [Header("Content")]
     public List<EnemyWave> BattleWaves;
     public List<EnemyWave> BossWaves;
-    public List<CardData> RewardPool;
-    public int RewardsPerBattle = 5;
+    public List<RewardData> RewardSets;
 
     [Header("Layout")]
     public bool Horizontal = true;   // left -> right fits the 16:9 camera better than bottom -> top

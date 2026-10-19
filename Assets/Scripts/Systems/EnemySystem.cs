@@ -37,6 +37,9 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         foreach (var enemy in enemyBoardView.EnemyViews)
         {
+            // turn count for attacks
+            enemy.TurnCount++;
+
             // apply burn
             int burnStacks = enemy.GetStatusEffectStackCount(StatusEffectType.BURN);
             if (burnStacks > 0)
@@ -58,9 +61,24 @@ public class EnemySystem : Singleton<EnemySystem>
                 continue;
             }
 
+            
+
             // attack hero
-            AttackHeroGA attackHeroGA = new(enemy);
-            ActionSystem.Instance.AddReaction(attackHeroGA);
+            int attackCount = enemy.Behavior != null ? enemy.Behavior.GetAttackCount(enemy) : 1;
+            for (int i = 0; i < attackCount; i++)
+            {
+                AttackHeroGA attackHeroGA = new(enemy);
+                ActionSystem.Instance.AddReaction(attackHeroGA);
+            }
+
+            // special actions
+            if (enemy.Behavior != null)
+            {
+                foreach (GameAction extra in enemy.Behavior.GetExtraActions(enemy))
+                {
+                    ActionSystem.Instance.AddReaction(extra);
+                }
+            }
             yield return new WaitForSeconds(0.1f);
         }
         yield return null;

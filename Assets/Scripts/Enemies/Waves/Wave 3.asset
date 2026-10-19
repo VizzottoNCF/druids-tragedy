@@ -13,6 +13,4 @@ MonoBehaviour:
   m_Name: Wave 3
   m_EditorClassIdentifier: Assembly-CSharp::EnemyWave
   enemyDatas:
-  - {fileID: 11400000, guid: bfa388c72789e4446b9fb0fd9705ef1c, type: 2}
-  - {fileID: 11400000, guid: 44d73bbcee4c68e4991cec61919056cb, type: 2}
-  - {fileID: 11400000, guid: bfa388c72789e4446b9fb0fd9705ef1c, type: 2}
+  - {fileID: 11400000, guid: 07431d6603e3b72468c81506fd95bd75, type: 2}
