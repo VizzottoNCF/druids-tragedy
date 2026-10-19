@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class MatchData : Singleton<MatchData>
@@ -10,6 +9,8 @@ public class MatchData : Singleton<MatchData>
     public List<CardData> Deck { get; set; }
     public List<string> CompletedEncounters;
     public HashSet<string> RewardsClaimed { get; } = new();
+    public MapData Map { get; set; }
+    public string CurrentNodeID { get; set; }
 
     [Header("Settings")]
     [SerializeField] private HeroData heroData;

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   <Title>k__BackingField: Poison Storm
   <Description>k__BackingField: poison all enemies
-  <Sequence>k__BackingField: 1
+  <Sequence>k__BackingField: 2
   <KeySequence>k__BackingField: 14010000130100001401000013010000
   <Image>k__BackingField: {fileID: 21300000, guid: 5306cb39c4377b2489c8aa45bf89bb53, type: 3}
   <ManualTargetEffect>k__BackingField:

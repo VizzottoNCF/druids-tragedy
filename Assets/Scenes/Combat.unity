@@ -227,10 +227,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HandManager
   cd: {fileID: 11400000, guid: 1c0079124ec5fbb4cb1a215dc743a8a7, type: 2}
   SelectedCard: {fileID: 0}
-  MaxHandSize: 7
+  MaxHandSize: 6
   HandSplineContainer: {fileID: 2131818138}
   handCards: []
-  MaxTraySize: 4
+  MaxTraySize: 3
   TraySplineContainer: {fileID: 317970804}
   trayCards: []
 --- !u!4 &151405927
@@ -1588,7 +1588,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1781.9999, y: 39.00004}
+  m_AnchoredPosition: {x: 1781.9999, y: 39.00003}
   m_SizeDelta: {x: 276, y: 78}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &890867813

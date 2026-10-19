@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ba88002cd06e14eb2ede41f63675dc, type: 3}
+  m_Name: MapConfig
+  m_EditorClassIdentifier: Assembly-CSharp::MapConfig
+  Floors: 6
+  Columns: 5
+  PathCount: 4
+  Weights:
+  - Type: 0
+    Weight: 65
+  - Type: 1
+    Weight: 20
+  - Type: 2
+    Weight: 15
+  MinCampsiteFloor: 3
+  MinShopFloor: 2
+  LastFloorIsCampsite: 1
+  BattleWaves:
+  - {fileID: 11400000, guid: 28f4ba0ffc724c24ebc545d2ea6fd060, type: 2}
+  - {fileID: 11400000, guid: 81a001680cfcfdd41af66e5d6b8da3bd, type: 2}
+  BossWaves:
+  - {fileID: 11400000, guid: ecdd48f76f2006e4aaa6568edb663234, type: 2}
+  RewardPool:
+  - {fileID: 11400000, guid: 43da84903e73e614eb2b09c7b5c0696b, type: 2}
+  - {fileID: 11400000, guid: 1c0079124ec5fbb4cb1a215dc743a8a7, type: 2}
+  - {fileID: 11400000, guid: e1d86d2512917d545b2437c3159ca765, type: 2}
+  - {fileID: 11400000, guid: c6ea1d082f11bbd4fa9810f4cb327f21, type: 2}
+  - {fileID: 11400000, guid: c497590e7426d704baced2383c0f355c, type: 2}
+  - {fileID: 11400000, guid: 1ebe579cbeae0e64084872df769d44c2, type: 2}
+  RewardsPerBattle: 5
+  Horizontal: 0
+  FloorSpacing: 2.5
+  ColumnSpacing: 1.8
+  Jitter: 0.3
+  UseFixedSeed: 0
+  Seed: 12345
