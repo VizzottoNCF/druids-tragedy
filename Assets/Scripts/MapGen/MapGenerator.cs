@@ -1,7 +1,4 @@
-using DG.Tweening;
 using System.Collections.Generic;
-using Unity.AI.Navigation.LowLevel;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 
 public static class MapGenerator
@@ -203,10 +200,30 @@ public static class MapGenerator
                 case RoomType.BOSS:
                     node.Wave = PickRandom(cfg.BossWaves, rng);
                     break;
+                case RoomType.SHOP:
+                    node.ShopPerks.AddRange(PickDistinct(cfg.Perks, cfg.ShopOptions, rng));
+                    break;
             }
         }
     }
+    private static List<T> PickDistinct<T>(List<T> source, int count, System.Random rng)
+    {
+        var result = new List<T>();
+        if (source == null || source.Count == 0)
+        {
+            Debug.LogWarning($"MapGenerator: empty list of {typeof(T).Name} in MapConfig");
+            return result;
+        }
 
+        var pool = new List<T>(source);
+        for (int i = 0; i < count && pool.Count > 0; i++)
+        {
+            int idx = rng.Next(pool.Count);
+            result.Add(pool[idx]);
+            pool.RemoveAt(idx);
+        }
+        return result;
+    }
     // shuffle-bag: every reward is used once before any of them repeats
     private static RewardData DrawFromBag(List<RewardData> source, List<RewardData> bag, System.Random rng)
     {

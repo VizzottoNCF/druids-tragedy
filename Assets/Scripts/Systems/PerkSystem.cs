@@ -6,6 +6,10 @@ public class PerkSystem : Singleton<PerkSystem>
 {
     [SerializeField] private PerksUI perksUI;
     private List<Perk> perks = new();
+    public void Setup(List<PerkData> p)
+    {
+        new List<Perk>(p.Select(perkData => new Perk(perkData))).ForEach(AddPerk);
+    }
     public void AddPerk(Perk perk)
     {
         perks.Add(perk);

@@ -298,7 +298,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f808d43cff224498684ac436e2bc73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomTransitionManager
-  screenFader: {fileID: 952797492}
 --- !u!4 &215751728
 Transform:
   m_ObjectHideFlags: 0
@@ -410,7 +409,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!225 &952797491
 CanvasGroup:
   m_ObjectHideFlags: 0

@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class CameraDrag : MonoBehaviour
 {
+    [Header("Bounds")]
     [SerializeField] private float lowerBound = -4.5f;
     [SerializeField] private float upperBound = -7f;
     private Camera cam;
@@ -10,35 +11,42 @@ public class CameraDrag : MonoBehaviour
 
     private bool isDragging;
 
+    [Header("Scroll")]
+    [SerializeField] private float scrollSpeed = 1f;
+    [SerializeField] private float smoothTime = 0.1f;
+
+    private float targetY;
+    private float velocity;
+
     private void Start()
     {
-        cam = Camera.main;
+        float min = Mathf.Min(lowerBound, upperBound);
+        float max = Mathf.Max(lowerBound, upperBound);
 
-        transform.position = new Vector3(0f, lowerBound, -10f); // start at the bottom of the map
+        // use the saved position if there is one, otherwise start at the bottom of the map
+        float saved = MatchData.Instance != null && MatchData.Instance.PathwayCameraY.HasValue ? MatchData.Instance.PathwayCameraY.Value : lowerBound;
+
+        targetY = Mathf.Clamp(saved, min, max);
+        transform.position = new Vector3(0f, targetY, -10f);
     }
-    public void OnDrag(InputAction.CallbackContext ctx)
+    private void Update()
     {
-        if (ctx.started) { origin = GetCameraPos(Input.mousePosition); }
+        float scroll = Input.mouseScrollDelta.y;
+        if (scroll != 0f)
+        {
+            targetY += scroll * scrollSpeed;
 
-        isDragging = ctx.started || ctx.performed;
-    }
+            float min = Mathf.Min(lowerBound, upperBound);
+            float max = Mathf.Max(lowerBound, upperBound);
+            targetY = Mathf.Clamp(targetY, min, max);
 
-    private void LateUpdate()
-    {
-        if (!isDragging) { return; }
+            // save targetY to MatchData so it can be restored when returning to the map
+            if (MatchData.Instance != null) MatchData.Instance.PathwayCameraY = targetY;
+        }
 
-        difference = GetCameraPos(Input.mousePosition) - transform.position;
+        float y = smoothTime > 0f ? Mathf.SmoothDamp(transform.position.y, targetY, ref velocity, smoothTime) : targetY;
 
-        Vector3 newPos = origin - difference;
-
-        // bounds so camera stays locked in the middle and can't go too high or too low
-        newPos.x = 0f;
-        newPos.z = -10f;
-
-        if (newPos.y < lowerBound) { newPos.y = lowerBound; }
-        if (newPos.y > upperBound) { newPos.y = upperBound; }
-
-        transform.position = newPos;
+        transform.position = new Vector3(0f, y, -10f);
     }
 
     private Vector3 GetCameraPos(Vector3 mousePos) => Camera.main.ScreenToWorldPoint(mousePos);

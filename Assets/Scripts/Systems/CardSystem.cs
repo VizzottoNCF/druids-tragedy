@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.Audio.ControlContext;
 
 public class CardSystem : Singleton<CardSystem>
 {
@@ -40,13 +41,14 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.AttachPerformer<DrawCardGA>(DrawCardPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardsGA>(DiscardAllCardsPerformer);
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
+        ActionSystem.AttachPerformer<IncreaseMaxTrayGA>(IncreaseMaxTrayPerformer);
     }
     private void OnDisable()
     {
         ActionSystem.DetachPerformer<DrawCardGA>();
         ActionSystem.DetachPerformer<DiscardAllCardsGA>();
         ActionSystem.DetachPerformer<PlayCardGA>();
-        
+        ActionSystem.DetachPerformer<IncreaseMaxTrayGA>();        
     }
 
     public void Setup(List<CardData> deckData)
@@ -202,5 +204,11 @@ public class CardSystem : Singleton<CardSystem>
             drawPile.AddRange(discardPile);
             discardPile.Clear();
         }
+    }
+    private IEnumerator IncreaseMaxTrayPerformer(IncreaseMaxTrayGA increaseMaxTrayGA)
+    {
+        handManager.MaxTraySize += increaseMaxTrayGA.Amount;
+        handManager.trayCountUI.text = $"{handManager.trayCards.Count} / {handManager.MaxTraySize}";
+        yield return null;
     }
 }

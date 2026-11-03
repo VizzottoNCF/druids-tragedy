@@ -35,6 +35,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 86e78e064073601438a3a2c0a3927ca8, type: 2}
   - {fileID: 11400000, guid: 711eb60870e2ff147b08bf003aaba6cf, type: 2}
   - {fileID: 11400000, guid: f995b07bcd7e43d4c8389d48066b5b0c, type: 2}
+  Perks:
+  - {fileID: 11400000, guid: 633b558b9d8ab8742afd814280fed321, type: 2}
+  - {fileID: 11400000, guid: 1d4994c394b3c8548b03b82970c699bb, type: 2}
+  - {fileID: 11400000, guid: 89b129dc02bc570498c086e631d48dea, type: 2}
   Horizontal: 0
   FloorSpacing: 2.5
   ColumnSpacing: 1.8

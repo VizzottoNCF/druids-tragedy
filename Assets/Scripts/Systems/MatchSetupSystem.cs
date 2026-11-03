@@ -5,7 +5,6 @@ using System.Collections;
 public class MatchSetupSystem : Singleton<MatchSetupSystem>
 {
     [SerializeField] private HeroData heroData;
-    [SerializeField] private PerkData perkData;
     public string encounterID = string.Empty;
     private void OnEnable()
     {
@@ -18,10 +17,6 @@ public class MatchSetupSystem : Singleton<MatchSetupSystem>
         ActionSystem.DetachPerformer<StartMatchGA>();
         ActionSystem.DetachPerformer<EndMatchGA>();
         ActionSystem.UnsubscribeReaction<StartMatchGA>(StartMatchPostReaction, ReactionTiming.POST);
-    }
-    private void Start()
-    {
-        
     }
     public List<CardData> GetDeck()
     {
@@ -44,9 +39,12 @@ public class MatchSetupSystem : Singleton<MatchSetupSystem>
         HeroSystem.Instance.Setup(heroData);
         EnemySystem.Instance.Setup(MatchData.Instance.wave);
         CardSystem.Instance.Setup(GetDeck());
-        PerkSystem.Instance.AddPerk(new Perk(perkData));
+        HandManager hm = ServiceLocator.Get<HandManager>();
+        hm.Setup(heroData.TraySize);
+        PerkSystem.Instance.Setup(MatchData.Instance.Perks);
         DrawCardGA drawCardGA = new(5);
         ActionSystem.Instance.AddReaction(drawCardGA);
+        ManaSystem.Instance.Setup(heroData.Sequence);
     }
     private IEnumerator EndMatchPerformer(EndMatchGA endMatchGA)
     {

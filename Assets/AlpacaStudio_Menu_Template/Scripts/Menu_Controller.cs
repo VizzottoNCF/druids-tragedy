@@ -32,20 +32,20 @@ public class Menu_Controller : MonoBehaviour
 	}	
 	public void PlayGame () 
 	{
-		_audioSource.PlayOneShot(_audioClip);
+		//_audioSource.PlayOneShot(_audioClip);
 		PlayerPrefs.SetString("_LastScene", scene.name);
 		UnityEngine.SceneManagement.SceneManager.LoadScene(_sceneToLoadOnPlay);
 	}	
 	public void Mute () 
 	{
-		_audioSource.PlayOneShot(_audioClip);
+		//_audioSource.PlayOneShot(_audioClip);
 		_soundButtons[0].interactable = true;
 		_soundButtons[1].interactable = false;
 		PlayerPrefs.SetInt("_Mute", 1);
 	}	
 	public void Unmute () 
 	{
-		_audioSource.PlayOneShot(_audioClip);
+		//_audioSource.PlayOneShot(_audioClip);
 		_soundButtons[0].interactable = false;
 		_soundButtons[1].interactable = true;
 		PlayerPrefs.SetInt("_Mute", 0);

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class RoomTransitionManager : MonoBehaviour
 {
-    [SerializeField] private ScreenFader screenFader;
+    //[SerializeField] private ScreenFader screenFader;
     private string currentRoom = "";
     private void Start()
     {
@@ -17,7 +17,7 @@ public class RoomTransitionManager : MonoBehaviour
         Debug.Log(sceneName);
 
         // start screen transition
-        if (!screenFader.isFading) { yield return screenFader.StartCoroutine(screenFader.Fade(0, 1, .25f)); }
+        //if (!screenFader.isFading) { yield return screenFader.StartCoroutine(screenFader.Fade(0, 1, .25f)); }
 
         // unload current room and then load next
         if (!string.IsNullOrEmpty(currentRoom))
@@ -33,6 +33,6 @@ public class RoomTransitionManager : MonoBehaviour
         
         currentRoom = SceneManager.GetActiveScene().name;
 
-        yield return screenFader.StartCoroutine(screenFader.Fade(1, 0, .25f));
+        //yield return screenFader.StartCoroutine(screenFader.Fade(1, 0, .25f));
     }
 }

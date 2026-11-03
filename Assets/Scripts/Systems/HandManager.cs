@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -20,10 +21,16 @@ public class HandManager : MonoBehaviour
 
     [Header("Tray Config")]
     public int MaxTraySize;
+    public TMP_Text trayCountUI;
     public SplineContainer TraySplineContainer;
     public List<GameObject> trayCards = new();
 
     private void Awake() { ServiceLocator.Register<HandManager>(this); }
+
+    public void Setup(int maxTray)
+    {
+        MaxTraySize = maxTray;
+    }
 
     public IEnumerator AddCard(Card card, Vector3 position, quaternion rotation)
     {
@@ -74,6 +81,8 @@ public class HandManager : MonoBehaviour
 
         DeselectCard();
 
+        trayCountUI.text = $"{trayCards.Count} / {MaxTraySize}";
+
         // Wait for the card position update to complete
         yield return StartCoroutine(UpdateTrayCardPosition(0.15f));
         
@@ -102,6 +111,8 @@ public class HandManager : MonoBehaviour
 
         StartCoroutine(UpdateCardPosition(0.15f));
         StartCoroutine(UpdateTrayCardPosition(0.15f));
+
+        trayCountUI.text = $"{trayCards.Count} / {MaxTraySize}";
 
         DeselectCard();
     }

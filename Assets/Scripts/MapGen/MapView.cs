@@ -1,8 +1,5 @@
-using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.AI.Navigation.LowLevel;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 
 // Lives in the "Pathway" scene. Replaces the hand placed Encounter objects.
@@ -23,6 +20,11 @@ public class MapView : MonoBehaviour
     [SerializeField] private Color travelledLineColor = Color.white;
     [SerializeField] private Color idleLineColor = new(1f, 1f, 1f, 0.3f);
 
+    [Header("UI")]
+    public GameObject shopUI;
+    [SerializeField] private PerkOption perkOptionPrefab;
+
+    private readonly List<PerkOption> shopOptions = new();
     private readonly Dictionary<string, MapNodeView> views = new();
     private readonly List<(MapNode from, MapNode to, LineRenderer lr)> lines = new();
     private Transform linesRoot;
@@ -111,6 +113,8 @@ public class MapView : MonoBehaviour
 
     private void OnNodeClicked(MapNodeView view)
     {
+        if (IsShopOpen) return;
+
         MapNode node = view.Node;
         MatchData match = MatchData.Instance;
 
@@ -123,29 +127,65 @@ public class MapView : MonoBehaviour
                 match.CurrentNodeID = node.Id;
                 match.PickNewEncounter(node.Wave);
 
-                // node.Id is the encounterID, so EndMatchGA keeps marking it in CompletedEncounters like before
+                // node.Id is the encounterID, so EndMatchGA keeps marking it in CompletedEncounters
                 ActionSystem.Instance.Perform(new StartMatchGA(node.Id));
                 break;
 
             case RoomType.CAMPSITE:
-                match.CurrentNodeID = node.Id;
-                Debug.Log("Campsite: TODO open rest UI (heal / upgrade / remove card)");
+                MatchData.Instance.HeroRemainingHealth += 20;
                 CompleteInstantly(node);
                 break;
 
             case RoomType.SHOP:
-                match.CurrentNodeID = node.Id;
-                Debug.Log("Shop: TODO open shop UI");
-                CompleteInstantly(node);
+                OpenShop(node);
                 break;
         }
     }
 
     // rooms with no combat scene are finished right away (replace this when their UIs exist)
-    private void CompleteInstantly(MapNode node)
+    public void CompleteInstantly(MapNode node)
     {
+        MatchData.Instance.CurrentNodeID = node.Id; // set here, so leaving a shop never softlocks
         MatchData.Instance.CompletedEncounters.Add(node.Id);
         Refresh();
+    }
+
+    public bool IsShopOpen => shopUI != null && shopUI.activeSelf;
+
+    private void OpenShop(MapNode node)
+    {
+        shopUI.SetActive(true);
+        ClearShopOptions();
+
+        foreach (PerkData perk in node.ShopPerks)
+        {
+            PerkOption option = Instantiate(perkOptionPrefab, shopUI.transform);
+            option.Setup(perk, node, this);
+            shopOptions.Add(option);
+        }
+    }
+
+    // called by PerkOption: only one can ever be taken because the shop closes right after
+    public void ChooseShopPerk(PerkData perk, MapNode node)
+    {
+        if (!IsShopOpen) return;
+
+        MatchData.Instance.Perks.Add(perk);
+        CloseShop();
+        CompleteInstantly(node);
+    }
+
+    // hook this to a "Leave" button so the player can back out without buying
+    public void CloseShop()
+    {
+        ClearShopOptions();
+        shopUI.SetActive(false);
+    }
+
+    private void ClearShopOptions()
+    {
+        foreach (PerkOption o in shopOptions) if (o != null) Destroy(o.gameObject);
+        shopOptions.Clear();
     }
 
     // same behaviour as the old Encounter.Complete: back from a battle -> offer the deck edit once

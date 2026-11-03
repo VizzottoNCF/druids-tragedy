@@ -27,6 +27,7 @@ public class MapNode
     // room content (decided at generation time so it survives scene changes)
     public EnemyWave Wave { get; set; }
     public List<CardData> Rewards { get; } = new();
+    public List<PerkData> ShopPerks { get; } = new();
 
     public MapNode(int floor, int column)
     {

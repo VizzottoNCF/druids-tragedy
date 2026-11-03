@@ -33,6 +33,8 @@ public class MapConfig : ScriptableObject
     public List<EnemyWave> BattleWaves;
     public List<EnemyWave> BossWaves;
     public List<RewardData> RewardSets;
+    public List<PerkData> Perks;
+    public int ShopOptions = 2; // how many perks each shop offers
 
     [Header("Layout")]
     public bool Horizontal = true;   // left -> right fits the 16:9 camera better than bottom -> top
