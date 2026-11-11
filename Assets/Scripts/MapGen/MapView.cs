@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Lives in the "Pathway" scene. Replaces the hand placed Encounter objects.
 public class MapView : MonoBehaviour
 {
     [SerializeField] private MapConfig config;
@@ -15,7 +14,7 @@ public class MapView : MonoBehaviour
     [SerializeField] private Sprite bossSprite;
 
     [Header("Lines")]
-    [SerializeField] private Material lineMaterial; // optional, falls back to Sprites/Default
+    [SerializeField] private Material lineMaterial;
     [SerializeField] private float lineWidth = 0.08f;
     [SerializeField] private Color travelledLineColor = Color.white;
     [SerializeField] private Color idleLineColor = new(1f, 1f, 1f, 0.3f);
@@ -36,7 +35,7 @@ public class MapView : MonoBehaviour
 
         MatchData match = MatchData.Instance;
 
-        // generate only once per run, the map must survive Pathway <-> Combat scene changes
+        // generate only once per run, surviving scene changes
         if (match.Map == null)
         {
             int seed = config.UseFixedSeed ? config.Seed : Random.Range(0, int.MaxValue);
@@ -63,7 +62,7 @@ public class MapView : MonoBehaviour
         {
             MapNodeView view = Instantiate(nodeViewPrefab, transform);
             view.transform.localPosition = node.Position;
-            view.Setup(node, GetSprite(node.Type), OnNodeClicked);
+            view.Setup(node, GetSprite(node.Type), OnNodeClicked, GetTypeString(node.Type), GetDescriptionString(node.Type));
             views.Add(node.Id, view);
         }
     }
@@ -165,7 +164,7 @@ public class MapView : MonoBehaviour
         }
     }
 
-    // called by PerkOption: only one can ever be taken because the shop closes right after
+    // called by PerkOption
     public void ChooseShopPerk(PerkData perk, MapNode node)
     {
         if (!IsShopOpen) return;
@@ -175,7 +174,6 @@ public class MapView : MonoBehaviour
         CompleteInstantly(node);
     }
 
-    // hook this to a "Leave" button so the player can back out without buying
     public void CloseShop()
     {
         ClearShopOptions();
@@ -216,6 +214,28 @@ public class MapView : MonoBehaviour
             RoomType.CAMPSITE => campsiteSprite,
             RoomType.SHOP => shopSprite,
             RoomType.BOSS => bossSprite,
+            _ => null
+        };
+    }
+    private string GetTypeString(RoomType type)
+    {
+        return type switch
+        {
+            RoomType.BATTLE => "Batalha",
+            RoomType.CAMPSITE => "Fogueira",
+            RoomType.SHOP => "Loja",
+            RoomType.BOSS => "Boss",
+            _ => null
+        };
+    }
+    private string GetDescriptionString(RoomType type)
+    {
+        return type switch
+        {
+            RoomType.BATTLE => "Uma batalha aleatoria",
+            RoomType.CAMPSITE => "Cure 20 de vida",
+            RoomType.SHOP => "Escolha entre dois perks",
+            RoomType.BOSS => "Uma batalha contra o chefe final",
             _ => null
         };
     }

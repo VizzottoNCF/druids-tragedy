@@ -21,13 +21,11 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
     {
         ActionSystem.AttachPerformer<QuickTimeEventGA>(QuickTimeEventPerformer);
         ActionSystem.SubscribeReaction<PlayCardGA>(PlayCardPreReaction, ReactionTiming.PRE);
-        Debug.Log("ATTACHED QTE PERFORMER AND REACTION");
     }
     private void OnDisable()
     {
         ActionSystem.DetachPerformer<QuickTimeEventGA>();
         ActionSystem.UnsubscribeReaction<PlayCardGA>(PlayCardPreReaction, ReactionTiming.PRE);
-        Debug.Log("DETACHED QTE PERFORMER AND REACTION");
     }
     private void PlayCardPreReaction(PlayCardGA playCardGA)
     {
@@ -44,23 +42,19 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
         // if there no cards played, break
         if (quickTimeEventGA.Cards.Count == 0) { yield break; }
         
-        // timer setup
-        int timeFlux = 0;
-        foreach (var card in quickTimeEventGA.Cards)
-        {
-            timeFlux++;
-        }
-
-        TimeLimit = 5f + timeFlux;
-
-
         // clear any remaining sequence and add the keys to the qte sequence
         currentSequence.Clear();
+
+
+        // add Keys to currentSequence and setup timer
+        TimeLimit = 1f;
         foreach (var card in quickTimeEventGA.Cards)
         {
-
-            // add Keys to currentSequence
-            card.KeySequence.ForEach(k => currentSequence.Add(k));
+            card.KeySequence.ForEach(k => 
+            { 
+                currentSequence.Add(k); 
+                TimeLimit += 1f; 
+            });
         }
 
 
@@ -118,8 +112,9 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
                 yield return null;
             }
         }
-        // in case qte is complete, add reaction with bonuses
-        OnQTESuccess();
+
+        // if time did not run out, then the player succeeded the QTE
+        if (elapsedTime < TimeLimit) OnQTESuccess();
         yield return null;
     }
     private void ShowQTEPrompt(bool active) => skillCheckUI.ShowQTEPrompt(active);
@@ -136,6 +131,7 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
         succededQTE = false;
 
         skillCheckUI.ClearQTE();
+        skillCheckUI.FailQTEVisualFX();
         ShowQTEPrompt(false);
     }
 
@@ -143,6 +139,7 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
     {
         succededQTE = true;
 
+        skillCheckUI.SuccessQTEVisualFX();
         skillCheckUI.ClearQTE();
         ShowQTEPrompt(false);
     }

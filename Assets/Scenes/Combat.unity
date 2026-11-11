@@ -1072,6 +1072,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &713937184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 713937185}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &713937185
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713937184}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &756649062
 GameObject:
   m_ObjectHideFlags: 0
@@ -1304,6 +1335,7 @@ GameObject:
   - component: {fileID: 822375854}
   - component: {fileID: 822375856}
   - component: {fileID: 822375855}
+  - component: {fileID: 822375857}
   m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
@@ -1352,15 +1384,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 9.9
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4481f31dbcc2410479325387f069a253, type: 2}
+  m_sharedMaterial: {fileID: -5994288385379392988, guid: 4481f31dbcc2410479325387f069a253, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190335
+  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1377,17 +1409,17 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 69
+  m_fontSizeBase: 69
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -27.99
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -1430,6 +1462,48 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 822375853}
   m_CullTransparentMesh: 1
+--- !u!114 &822375857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822375853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bff0ce136434b604c961e9b276925318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WordWobble
+  gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0.3915094, b: 0.3915094, a: 1}
+    key1: {r: 1, g: 0, b: 0, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &843202902
 GameObject:
   m_ObjectHideFlags: 0
@@ -2621,7 +2695,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -99
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: c13923ba3719dde48ba054f786e85ba1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 07e3f2fe04e5ac646a149f13d55c05f2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2862,6 +2936,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillCheckUI
   timer: {fileID: 822375855}
   Frame: {fileID: 1672787807}
+  successVFX: {fileID: 2353600328335836179, guid: ceec7516237b4104b94300043ca39784, type: 3}
+  failVFX: {fileID: 4021103657954561961, guid: 5c755f9bc5253ea418e919994537dcc7, type: 3}
   leftArrow: {fileID: 7159825692375198094, guid: 7b381869d91cd784ba1ff9f6d93e8558, type: 3}
   downArrow: {fileID: 420122775139535638, guid: f6ed913b8563cce40b84cb9dc9e118a9, type: 3}
   upArrow: {fileID: 2704447657115919361, guid: bfd8bab6e5987a84885c6c5ce27ad937, type: 3}
@@ -3542,3 +3618,4 @@ SceneRoots:
   - {fileID: 1672345195}
   - {fileID: 1703915997}
   - {fileID: 843202904}
+  - {fileID: 713937185}

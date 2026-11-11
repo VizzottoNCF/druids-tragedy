@@ -78,10 +78,11 @@ public class HandManager : MonoBehaviour
         trayCards.Remove(card);
 
         yield return card.transform.DOScale(Vector3.zero, 0.15f).WaitForCompletion();
-
+        
         DeselectCard();
 
         trayCountUI.text = $"{trayCards.Count} / {MaxTraySize}";
+
 
         // Wait for the card position update to complete
         yield return StartCoroutine(UpdateTrayCardPosition(0.15f));
@@ -125,6 +126,7 @@ public class HandManager : MonoBehaviour
         Vector3 handCardScale = new Vector3(1f, 1f, 1f);
         yield return card.transform.DOScale(handCardScale, 0.15f).WaitForCompletion();
 
+        trayCountUI.text = $"{trayCards.Count} / {MaxTraySize}";
 
         StartCoroutine(UpdateCardPosition(0.15f));
         StartCoroutine(UpdateTrayCardPosition(0.15f));

@@ -8,6 +8,7 @@ public class CombatantView : MonoBehaviour
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private StatusEffectsUI statusEffectsUI;
+    [SerializeField] private HealthBarUI healthBar;
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
     private Dictionary<StatusEffectType, int> statusEffects = new();
@@ -16,17 +17,22 @@ public class CombatantView : MonoBehaviour
         MaxHealth = health;
         CurrentHealth = MaxHealth;
         spriteRenderer.sprite = image;
+        if (healthBar != null) healthBar.Setup(MaxHealth, CurrentHealth);
         UpdateHealthText();
     }
     protected void SetupBase(int health, int currentHealth, Sprite image)
     {
-        MaxHealth = health;
         CurrentHealth = currentHealth;
         spriteRenderer.sprite = image;
+        if (healthBar != null) healthBar.Setup(MaxHealth, CurrentHealth);
         UpdateHealthText();
     }
     public int GetCurrentHealth() => CurrentHealth;
-    private void UpdateHealthText() => healthText.text = $"HP: {CurrentHealth}";
+    private void UpdateHealthText()
+    {
+        if (healthText != null) healthText.text = $"HP: {CurrentHealth}";
+        if (healthBar != null) healthBar.SetHealth(CurrentHealth);
+    }
     public void Damage(int damageAmount)
     {
         if (this == null) return;

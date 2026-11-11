@@ -81,25 +81,12 @@ public class ActionSystem : Singleton<ActionSystem>
     public static void DetachPerformer<T>() where T : GameAction
     {
         Type type = typeof(T);
-        Debug.Log(type.Name);
-        foreach (KeyValuePair<Type, Func<GameAction, IEnumerator>> p in performers)
-        {
-            if (p.Key.Name == type.Name)
-            {
-                print($"Removing {p.Key.Name}");
-            }
-        }
-        if (performers.ContainsKey(type)) 
-        { 
-            
-            performers.Remove(type);
-            Debug.Log($"Performer removed {!performers.ContainsKey(type)}");
-        }
+        if (performers.ContainsKey(type))  {  performers.Remove(type); }
     }
     public static void SubscribeReaction<T>(Action<T> reaction, ReactionTiming timing) where T : GameAction
     {
         var key = (typeof(T), timing, (Delegate)reaction);
-        if (wrappers.ContainsKey(key)) return; // evita inscrição duplicada
+        if (wrappers.ContainsKey(key)) return; // evita inscricao duplicada
 
         Action<GameAction> wrapped = action => reaction((T)action);
         wrappers[key] = wrapped;
@@ -121,24 +108,4 @@ public class ActionSystem : Singleton<ActionSystem>
         if (subs.TryGetValue(typeof(T), out var list)) list.Remove(wrapped);
         wrappers.Remove(key);
     }
-    /*public static void SubscribeReaction<T>(Action<T> reaction, ReactionTiming timing) where T : GameAction
-    {
-        Dictionary<Type, List<Action<GameAction>>> subs = timing == ReactionTiming.PRE ? preSubs : postSubs;
-        void wrappedReaction(GameAction action) => reaction((T)action);
-        if (subs.ContainsKey(typeof(T))) { subs[typeof(T)].Add(wrappedReaction); }
-        else
-        {
-            subs.Add(typeof(T), new());
-            subs[typeof(T)].Add(wrappedReaction);
-        }
-    }
-    public static void UnsubscribeReaction<T>(Action<T> reaction, ReactionTiming timing) where T : GameAction
-    {
-        Dictionary<Type, List<Action<GameAction>>> subs = timing == ReactionTiming.PRE ? preSubs : postSubs;
-        if (subs.ContainsKey(typeof(T)))
-        {
-            void wrappedReaction(GameAction action) => reaction((T)action);
-            subs[typeof(T)].Remove(wrappedReaction);
-        }
-    }*/
 }

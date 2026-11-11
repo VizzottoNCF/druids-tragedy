@@ -193,7 +193,7 @@ public class DeckEditSystem : Singleton<DeckEditSystem>
 
     private void UpdateUI()
     {
-        changesText.text = $"Alterações: {changesMade}/{maxChanges}";
+        changesText.text = $"Changes: {changesMade}/{maxChanges}";
         addButton.interactable = HasChangesLeft && selectedReward != null;
         removeButton.interactable = HasChangesLeft && CanRemove && selectedDeckCard != null;
     }

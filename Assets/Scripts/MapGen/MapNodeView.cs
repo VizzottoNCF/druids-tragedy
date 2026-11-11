@@ -14,14 +14,18 @@ public class MapNodeView : MonoBehaviour
 
     private SpriteRenderer sr;
     private Action<MapNodeView> onClick;
+    private string nodeDescription;
+    private string nodeType;
 
-    public void Setup(MapNode node, Sprite sprite, Action<MapNodeView> clicked)
+    public void Setup(MapNode node, Sprite sprite, Action<MapNodeView> clicked, string type, string description)
     {
         sr = GetComponent<SpriteRenderer>();
         Node = node;
         onClick = clicked;
         sr.sprite = sprite;
         gameObject.name = node.Id;
+        nodeType = type;
+        nodeDescription = description;
     }
 
     public void SetState(bool visited, bool available)
@@ -37,5 +41,14 @@ public class MapNodeView : MonoBehaviour
         if (!Available) return;
 
         onClick?.Invoke(this);
+    }
+
+    private void OnMouseEnter()
+    {
+        FindAnyObjectByType<NodeInfoUI>()?.ShowNodeInfo(nodeType, nodeDescription);
+    }
+    private void OnMouseExit()
+    {
+        FindAnyObjectByType<NodeInfoUI>()?.HideNodeInfo();
     }
 }

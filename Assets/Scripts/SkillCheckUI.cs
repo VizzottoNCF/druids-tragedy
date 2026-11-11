@@ -8,6 +8,8 @@ public class SkillCheckUI : MonoBehaviour
     private List<KeyCode> KeySequence = new List<KeyCode>();
     [SerializeField] private TMP_Text timer;
     [SerializeField] private Transform Frame;
+    [SerializeField] private GameObject successVFX;
+    [SerializeField] private GameObject failVFX;
 
     [Header("Keys")]
     [SerializeField] private GameObject leftArrow;
@@ -40,6 +42,16 @@ public class SkillCheckUI : MonoBehaviour
 
         keys.Clear();
         KeySequence.Clear();
+    }
+    public void FailQTEVisualFX()
+    {
+        Vector3 pos = new Vector3(0f, 2f, 0f);
+        Instantiate(failVFX, pos, Quaternion.identity);
+    }
+    public void SuccessQTEVisualFX()
+    {
+        Vector3 pos = new Vector3(0f, 2f, 0f);
+        Instantiate(successVFX, pos, Quaternion.identity);
     }
     private void InstantiateKeys()
     {

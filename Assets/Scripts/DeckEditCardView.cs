@@ -10,7 +10,7 @@ public class DeckEditCardView : CustomButtonScale
     [SerializeField] private TMP_Text description;
     [SerializeField] private TMP_Text sequence;
     [SerializeField] private Image art;
-    [SerializeField] private Image background;   // usado para marcar seleção/bloqueio
+    [SerializeField] private Image background;   // usado para marcar selecao/bloqueio
 
     public CardData Data { get; private set; }
     public int Index { get; private set; }
