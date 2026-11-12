@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d902b71854b9f043a26c3edb4b333ed, type: 3}
+  m_Name: TutorialWave
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyWave
+  enemyDatas:
+  - {fileID: 11400000, guid: bca27df91bcd1d24f92b08873d64b1f2, type: 2}
+  - {fileID: 11400000, guid: 4383fd4d4dcd2c444bba12e0bc3abecb, type: 2}
+  - {fileID: 11400000, guid: bca27df91bcd1d24f92b08873d64b1f2, type: 2}

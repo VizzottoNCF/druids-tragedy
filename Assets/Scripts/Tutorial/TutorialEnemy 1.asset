@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db9f096a5a1737147bd0166f994eccbc, type: 3}
+  m_Name: TutorialEnemy 1
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  <Image>k__BackingField: {fileID: 3365029792430603138, guid: 33402646230033b4b84a031f5aded2de, type: 3}
+  <Health>k__BackingField: 10
+  <AttackPower>k__BackingField: 0
+  <Behavior>k__BackingField:
+    rid: 3969054726484656230
+  references:
+    version: 2
+    RefIds:
+    - rid: 3969054726484656230
+      type: {class: AttackPatternBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        hitsPerAttack: 1
+        everyNTurns: 1

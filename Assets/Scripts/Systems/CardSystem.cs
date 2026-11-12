@@ -177,7 +177,8 @@ public class CardSystem : Singleton<CardSystem>
             yield break;
         }
 
-        Card card = drawPile.Draw();
+        // draw card from the draw pile
+        Card card = TutorialSystem.Active ? drawPile.DrawFirst() : drawPile.Draw();
 
         if (card != null)
         {

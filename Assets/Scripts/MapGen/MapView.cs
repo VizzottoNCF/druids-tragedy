@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapView : MonoBehaviour
@@ -21,6 +22,7 @@ public class MapView : MonoBehaviour
 
     [Header("UI")]
     public GameObject shopUI;
+    [SerializeField] private GameObject victoryUI;
     [SerializeField] private PerkOption perkOptionPrefab;
 
     private readonly List<PerkOption> shopOptions = new();
@@ -196,7 +198,7 @@ public class MapView : MonoBehaviour
 
         if (current.Type == RoomType.BOSS)
         {
-            Debug.Log("Boss defeated: TODO end of run / next act");
+            HandleBossDefeated(match, current);
             return;
         }
 
@@ -239,4 +241,9 @@ public class MapView : MonoBehaviour
             _ => null
         };
     }
+    private void HandleBossDefeated(MatchData match, MapNode current)
+    {
+        ShowVictory();
+    }
+    private void ShowVictory() => victoryUI.SetActive(true);
 }

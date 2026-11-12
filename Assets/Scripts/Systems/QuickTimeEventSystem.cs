@@ -41,7 +41,7 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
     {
         // if there no cards played, break
         if (quickTimeEventGA.Cards.Count == 0) { yield break; }
-        
+
         // clear any remaining sequence and add the keys to the qte sequence
         currentSequence.Clear();
 
@@ -50,10 +50,10 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
         TimeLimit = 1f;
         foreach (var card in quickTimeEventGA.Cards)
         {
-            card.KeySequence.ForEach(k => 
-            { 
-                currentSequence.Add(k); 
-                TimeLimit += 1f; 
+            card.KeySequence.ForEach(k =>
+            {
+                currentSequence.Add(k);
+                TimeLimit += 1f;
             });
         }
 
@@ -80,7 +80,7 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
             // key press loop
             while (!keyPressed && elapsedTime < TimeLimit)
             {
-                elapsedTime += Time.deltaTime;
+                if (TutorialSystem.Instance == null) elapsedTime += Time.deltaTime;
 
                 if (Input.anyKeyDown)
                 {
@@ -93,17 +93,30 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
                         }
                     }
                     if (pressedKey == KeyCode.None) { continue; }
-                    keyPressed = true;
 
-                    if (Input.GetKeyDown(pressedKey) == Input.GetKeyDown(currentSequence[i]))
+                    //tutorial version
+                    if (TutorialSystem.Instance != null)
                     {
-                        OnKeyCorrect(i);
+                        if (Input.GetKeyDown(pressedKey) == Input.GetKeyDown(currentSequence[i])) 
+                        { 
+                            OnKeyCorrect(i);
+                            keyPressed = true;
+                        }
                     }
+
+                    //normal version
                     else
                     {
-                        OnKeyWrong(pressedKey);
-                        yield break;
+                        keyPressed = true;
+
+                        if (Input.GetKeyDown(pressedKey) == Input.GetKeyDown(currentSequence[i])) { OnKeyCorrect(i); }
+                        else
+                        {
+                            OnKeyWrong(pressedKey);
+                            yield break;
+                        }
                     }
+
                 }
 
 
@@ -128,6 +141,8 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
 
     private void OnKeyWrong(KeyCode key = KeyCode.None)
     {
+        if (TutorialSystem.Instance != null) return;
+
         succededQTE = false;
 
         skillCheckUI.ClearQTE();

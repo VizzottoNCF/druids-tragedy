@@ -45,7 +45,7 @@ public class DamageSystem : Singleton<DamageSystem>
             }
             else
             {
-                Debug.Log("Game over logic");
+                GameOverSystem.Instance.TriggerGameOver();
             }
         }
     }

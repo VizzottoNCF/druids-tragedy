@@ -55,6 +55,7 @@ public class CardView : MonoBehaviour
     public void OnMouseDown()
     {
         if (!Interactions.Instance.PlayerCanInteract()) return;
+        if (TutorialSystem.Active && !TutorialSystem.Instance.CanUseCard(Card)) return;
 
         if (inTray)
         {

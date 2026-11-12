@@ -15,10 +15,6 @@ public class RoomTransitionManager : MonoBehaviour
     public IEnumerator Transition(string sceneName)
     {
         Debug.Log(sceneName);
-
-        // start screen transition
-        //if (!screenFader.isFading) { yield return screenFader.StartCoroutine(screenFader.Fade(0, 1, .25f)); }
-
         // unload current room and then load next
         if (!string.IsNullOrEmpty(currentRoom))
         {

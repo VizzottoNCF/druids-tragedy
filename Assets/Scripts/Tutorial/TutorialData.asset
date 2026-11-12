@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96e0cdb007ed3cc4e80191126a96c6d9, type: 3}
+  m_Name: TutorialData
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialData
+  <Wave>k__BackingField: {fileID: 11400000, guid: c231565bca1316546ba1c23261394cdf, type: 2}
+  <HeroHealth>k__BackingField: 100
+  <FixedHand>k__BackingField:
+  - {fileID: 11400000, guid: 1c0079124ec5fbb4cb1a215dc743a8a7, type: 2}
+  - {fileID: 11400000, guid: 1c0079124ec5fbb4cb1a215dc743a8a7, type: 2}
+  - {fileID: 11400000, guid: e1d86d2512917d545b2437c3159ca765, type: 2}
+  - {fileID: 11400000, guid: 1c0079124ec5fbb4cb1a215dc743a8a7, type: 2}
+  - {fileID: 11400000, guid: 1c0079124ec5fbb4cb1a215dc743a8a7, type: 2}
+  - {fileID: 11400000, guid: 1c0079124ec5fbb4cb1a215dc743a8a7, type: 2}
+  - {fileID: 11400000, guid: 1c0079124ec5fbb4cb1a215dc743a8a7, type: 2}
+  - {fileID: 11400000, guid: 1c0079124ec5fbb4cb1a215dc743a8a7, type: 2}
+  <Perks>k__BackingField: []
+  <Steps>k__BackingField:
+  - rid: 3969054726484656231
+  - rid: 3969054731220025436
+  - rid: 3969054731220025437
+  - rid: 3969054731220025439
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3969054726484656231
+      type: {class: TutorialStep, ns: , asm: Assembly-CSharp}
+      data:
+        <Message>k__BackingField: "No in\xEDcio de todo turno do jogador, voc\xEA
+          recebe 4 cartas, e pode ter at\xE9 6 cartas na m\xE3o"
+        <AllowedCard>k__BackingField: {fileID: 0}
+        <AllowEndTurn>k__BackingField: 0
+        <WaitForClick>k__BackingField: 1
+        <Completion>k__BackingField:
+          rid: -2
+        <Target>k__BackingField: 1
+    - rid: 3969054731220025436
+      type: {class: TutorialStep, ns: , asm: Assembly-CSharp}
+      data:
+        <Message>k__BackingField: "Voc\xEA pode escolher algumas delas para jogar
+          em sua bandeja de cartas"
+        <AllowedCard>k__BackingField: {fileID: 0}
+        <AllowEndTurn>k__BackingField: 0
+        <WaitForClick>k__BackingField: 1
+        <Completion>k__BackingField:
+          rid: -2
+        <Target>k__BackingField: 2
+    - rid: 3969054731220025437
+      type: {class: TutorialStep, ns: , asm: Assembly-CSharp}
+      data:
+        <Message>k__BackingField: "Puxe a carta \"Coruja\" para o campo de jogo e
+          ela se mover\xE1 para a bandeja"
+        <AllowedCard>k__BackingField: {fileID: 11400000, guid: e1d86d2512917d545b2437c3159ca765, type: 2}
+        <AllowEndTurn>k__BackingField: 0
+        <WaitForClick>k__BackingField: 0
+        <Completion>k__BackingField:
+          rid: 3969054731220025438
+        <Target>k__BackingField: 1
+    - rid: 3969054731220025438
+      type: {class: OnSpendManaCondition, ns: , asm: Assembly-CSharp}
+      data:
+        timing: 1
+    - rid: 3969054731220025439
+      type: {class: TutorialStep, ns: , asm: Assembly-CSharp}
+      data:
+        <Message>k__BackingField: Agora selecione End Turn para jogar as cartas na
+          sua bandeja e passar o turno para os inimigos
+        <AllowedCard>k__BackingField: {fileID: 0}
+        <AllowEndTurn>k__BackingField: 1
+        <WaitForClick>k__BackingField: 0
+        <Completion>k__BackingField:
+          rid: 3969054731220025440
+        <Target>k__BackingField: 4
+    - rid: 3969054731220025440
+      type: {class: OnEnemyTurnCondition, ns: , asm: Assembly-CSharp}
+      data:
+        timing: 0

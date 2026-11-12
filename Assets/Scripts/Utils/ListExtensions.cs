@@ -17,4 +17,17 @@ public static class ListExtensions
         list.RemoveAt(index);
         return item;
     }
+
+    public static T DrawFirst<T>(this List<T> list)
+    {
+        if (list.Count == 0)
+        {
+            Debug.LogWarning("List is empty. Cannot draw an item.");
+            return default;
+        }
+
+        T item = list[0];
+        list.RemoveAt(0);
+        return item;
+    }
 }

@@ -10,8 +10,7 @@ namespace SerializeReferenceEditor.Editor.SRActions
         private readonly TypeInfo[] _typeInfos;
         private readonly string _type;
 
-        public InstanceClassSRAction(SerializedProperty currentProperty, TypeInfo[] typeInfos, string type)
-            : base(currentProperty)
+        public InstanceClassSRAction(SerializedProperty currentProperty, TypeInfo[] typeInfos, string type) : base(currentProperty)
         {
             _typeInfos = typeInfos;
             _type = type;

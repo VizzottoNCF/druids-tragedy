@@ -30,11 +30,16 @@ public class Menu_Controller : MonoBehaviour
 		PlayerPrefs.SetString("_LastScene", scene.name.ToString()); 
 		//Debug.Log(scene.name);
 	}	
-	public void PlayGame () 
+	public void PlayGame() 
 	{
 		//_audioSource.PlayOneShot(_audioClip);
 		PlayerPrefs.SetString("_LastScene", scene.name);
 		UnityEngine.SceneManagement.SceneManager.LoadScene(_sceneToLoadOnPlay);
+	}	
+	public void PlayTutorial() 
+	{
+		PlayerPrefs.SetString("_LastScene", scene.name);
+		UnityEngine.SceneManagement.SceneManager.LoadScene("PathwayTutorial");
 	}	
 	public void Mute () 
 	{

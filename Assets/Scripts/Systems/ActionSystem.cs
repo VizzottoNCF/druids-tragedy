@@ -8,13 +8,15 @@ public class ActionSystem : Singleton<ActionSystem>
 {
     private List<GameAction> reactions = null;
     public bool IsPerforming { get; private set; } = false;
+    public bool IsHalted { get; private set; } = false;
     private static Dictionary<Type, List<Action<GameAction>>> preSubs = new();
     private static Dictionary<Type, List<Action<GameAction>>> postSubs = new();
     private static Dictionary<Type, Func<GameAction, IEnumerator>> performers = new();
     private static readonly Dictionary<(Type, ReactionTiming, Delegate), Action<GameAction>> wrappers = new();
+    public void Halt() { IsHalted = true; reactions = null; }
     public void Perform(GameAction action, System.Action OnPerformFinished = null)
     {
-        if (IsPerforming) return;
+        if (IsPerforming || IsHalted) return;
         IsPerforming = true;
         StartCoroutine(Flow(action, () => { IsPerforming = false; OnPerformFinished?.Invoke(); }));
     }
@@ -46,12 +48,24 @@ public class ActionSystem : Singleton<ActionSystem>
         }
         yield return null;
     }
+    //private void PerformSubscribers(GameAction action, Dictionary<Type, List<Action<GameAction>>> subs)
+    //{
+    //    Type type = action.GetType();
+    //    if (subs.ContainsKey(type))
+    //    {
+    //        foreach (var sub in subs[type])
+    //        {
+    //            sub(action);
+    //        }
+    //    }
+    //}
     private void PerformSubscribers(GameAction action, Dictionary<Type, List<Action<GameAction>>> subs)
     {
         Type type = action.GetType();
-        if (subs.ContainsKey(type))
+        if (subs.TryGetValue(type, out var list))
         {
-            foreach (var sub in subs[type])
+            // iterate a copy: a subscriber can (un)subscribe while it runs
+            foreach (var sub in list.ToList())
             {
                 sub(action);
             }
@@ -59,7 +73,7 @@ public class ActionSystem : Singleton<ActionSystem>
     }
     private IEnumerator PerformReactions()
     {
-        if (reactions == null) { yield break; }
+        if (reactions == null || IsHalted) { yield break; }
 
         // iterate through a copy of reactions because reactions can be killed by the EndMatch GameAction
         var reactionsCopy = reactions.ToList();

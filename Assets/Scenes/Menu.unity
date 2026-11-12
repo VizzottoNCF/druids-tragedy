@@ -216,8 +216,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5635481925381953957}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: PlayGame
+        m_TargetAssemblyTypeName: Menu_Controller, Assembly-CSharp
+        m_MethodName: PlayTutorial
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
