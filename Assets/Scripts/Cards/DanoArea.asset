@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: DanoArea
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   <Title>k__BackingField: Coruja
-  <Description>k__BackingField: Deal 10 dmg to all enemies
+  <Description>k__BackingField: Cause 10 de dano em todos inimigos
   <Sequence>k__BackingField: 2
   <KeySequence>k__BackingField: 11010000130100001201000014010000
   <Image>k__BackingField: {fileID: 21300000, guid: 5306cb39c4377b2489c8aa45bf89bb53, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 8091acbfc0a1a5243985bd05db1cd478, type: 3}
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:

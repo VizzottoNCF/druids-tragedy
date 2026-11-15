@@ -56,7 +56,7 @@ public class CardView : MonoBehaviour
     {
         if (!Interactions.Instance.PlayerCanInteract()) return;
         if (TutorialSystem.Active && !TutorialSystem.Instance.CanUseCard(Card)) return;
-
+        
         if (inTray)
         {
             // take off card from tray and put it back in hand
@@ -88,6 +88,7 @@ public class CardView : MonoBehaviour
     private void OnMouseDrag()
     {
         if (!Interactions.Instance.PlayerCanInteract()) return;
+        if (TutorialSystem.Active && !TutorialSystem.Instance.CanUseCard(Card)) return;
 
         if (Card.ManualEffect != null) return;
 

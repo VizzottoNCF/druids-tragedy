@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Armor Up
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   <Title>k__BackingField: Escudo
-  <Description>k__BackingField: Add 5 armor
+  <Description>k__BackingField: Adicione +5 de Armadura
   <Sequence>k__BackingField: 0
   <KeySequence>k__BackingField: 1401000014010000
   <Image>k__BackingField: {fileID: 21300000, guid: b606310c2b43ed64e94e4bf8c15db360, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 285ce0782dfac7640b321082c5695969, type: 3}
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:

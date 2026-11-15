@@ -8,6 +8,7 @@ public class Card
     public string Title => data.Title;
     public string Description => data.Description;
     public Sprite Image => data.Image;
+    public Sprite Icon => data.Icon;
     public Effect ManualEffect => data.ManualTargetEffect;
     public List<AutoTargetEffect> OtherEffects => data.OtherEffects;
     public List<KeyCode> KeySequence => data.KeySequence;

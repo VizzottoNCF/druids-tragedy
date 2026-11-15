@@ -244,6 +244,7 @@ public class MapView : MonoBehaviour
     private void HandleBossDefeated(MatchData match, MapNode current)
     {
         ShowVictory();
+        FindAnyObjectByType<Pause>().CanPause = false;
     }
     private void ShowVictory() => victoryUI.SetActive(true);
 }

@@ -13,6 +13,7 @@ public class MapNodeView : MonoBehaviour
     public bool Available { get; private set; }
 
     private SpriteRenderer sr;
+    public SpriteRenderer srChild;
     private Action<MapNodeView> onClick;
     private string nodeDescription;
     private string nodeType;
@@ -26,6 +27,11 @@ public class MapNodeView : MonoBehaviour
         gameObject.name = node.Id;
         nodeType = type;
         nodeDescription = description;
+
+        if (nodeType == "Boss")
+        {
+            srChild.enabled = false;
+        }
     }
 
     public void SetState(bool visited, bool available)

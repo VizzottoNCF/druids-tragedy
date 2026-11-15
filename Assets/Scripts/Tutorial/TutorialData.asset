@@ -28,7 +28,11 @@ MonoBehaviour:
   - rid: 3969054726484656231
   - rid: 3969054731220025436
   - rid: 3969054731220025437
+  - rid: 3969054808550932480
   - rid: 3969054731220025439
+  - rid: 3969054808550932481
+  - rid: 3969054808550932579
+  - rid: 3969054808550932576
   references:
     version: 2
     RefIds:
@@ -38,7 +42,7 @@ MonoBehaviour:
       type: {class: TutorialStep, ns: , asm: Assembly-CSharp}
       data:
         <Message>k__BackingField: "No in\xEDcio de todo turno do jogador, voc\xEA
-          recebe 4 cartas, e pode ter at\xE9 6 cartas na m\xE3o"
+          recebe 5 cartas, e pode ter at\xE9 7 cartas na m\xE3o"
         <AllowedCard>k__BackingField: {fileID: 0}
         <AllowEndTurn>k__BackingField: 0
         <WaitForClick>k__BackingField: 1
@@ -74,8 +78,8 @@ MonoBehaviour:
     - rid: 3969054731220025439
       type: {class: TutorialStep, ns: , asm: Assembly-CSharp}
       data:
-        <Message>k__BackingField: Agora selecione End Turn para jogar as cartas na
-          sua bandeja e passar o turno para os inimigos
+        <Message>k__BackingField: Agora selecione Encerrar Turno para jogar as cartas
+          na sua bandeja e passar o turno para os inimigos
         <AllowedCard>k__BackingField: {fileID: 0}
         <AllowEndTurn>k__BackingField: 1
         <WaitForClick>k__BackingField: 0
@@ -86,3 +90,56 @@ MonoBehaviour:
       type: {class: OnEnemyTurnCondition, ns: , asm: Assembly-CSharp}
       data:
         timing: 0
+    - rid: 3969054808550932480
+      type: {class: TutorialStep, ns: , asm: Assembly-CSharp}
+      data:
+        <Message>k__BackingField: "Cartas possuem um custo de energia, que \xE9 reduzido
+          do seu total conforme as cartas na sua bandeija"
+        <AllowedCard>k__BackingField: {fileID: 0}
+        <AllowEndTurn>k__BackingField: 0
+        <WaitForClick>k__BackingField: 1
+        <Completion>k__BackingField:
+          rid: -2
+        <Target>k__BackingField: 3
+    - rid: 3969054808550932481
+      type: {class: TutorialStep, ns: , asm: Assembly-CSharp}
+      data:
+        <Message>k__BackingField: "Sempre que joga uma carta, ser\xE1 necess\xE1rio
+          realizar um Quick Time Event para seu efeito ser ativado. Caso falhe no
+          Quick Time Event, a carta \xE9 perdida"
+        <AllowedCard>k__BackingField: {fileID: 0}
+        <AllowEndTurn>k__BackingField: 0
+        <WaitForClick>k__BackingField: 0
+        <Completion>k__BackingField:
+          rid: 3969054808550932483
+        <Target>k__BackingField: 7
+    - rid: 3969054808550932483
+      type: {class: OnEnemyTurnCondition, ns: , asm: Assembly-CSharp}
+      data:
+        timing: 1
+    - rid: 3969054808550932576
+      type: {class: TutorialStep, ns: , asm: Assembly-CSharp}
+      data:
+        <Message>k__BackingField: Jogue 3 cartas de Dano selecionando o inimigo como
+          alvo e acabe seu turno para encerrar o tutorial e iniciar uma partida.
+        <AllowedCard>k__BackingField: {fileID: 11400000, guid: 1c0079124ec5fbb4cb1a215dc743a8a7, type: 2}
+        <AllowEndTurn>k__BackingField: 1
+        <WaitForClick>k__BackingField: 0
+        <Completion>k__BackingField:
+          rid: 3969054808550932577
+        <Target>k__BackingField: 2
+    - rid: 3969054808550932577
+      type: {class: OnEnemyTurnCondition, ns: , asm: Assembly-CSharp}
+      data:
+        timing: 0
+    - rid: 3969054808550932579
+      type: {class: TutorialStep, ns: , asm: Assembly-CSharp}
+      data:
+        <Message>k__BackingField: "Cartas tamb\xE9m podem ser removidas da bandeja
+          ao clicar nelas. "
+        <AllowedCard>k__BackingField: {fileID: 11400000, guid: 1c0079124ec5fbb4cb1a215dc743a8a7, type: 2}
+        <AllowEndTurn>k__BackingField: 0
+        <WaitForClick>k__BackingField: 1
+        <Completion>k__BackingField:
+          rid: -2
+        <Target>k__BackingField: 2

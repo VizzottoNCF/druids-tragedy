@@ -61,7 +61,7 @@ public class MatchSetupSystem : Singleton<MatchSetupSystem>
         HeroSystem.Instance.Setup(heroData);        
         HandManager hm = ServiceLocator.Get<HandManager>();
         hm.Setup(heroData.TraySize);
-        DrawCardGA drawCardGA = new(4);
+        DrawCardGA drawCardGA = new(5);
         ActionSystem.Instance.AddReaction(drawCardGA);
         ManaSystem.Instance.Setup(heroData.Sequence);
     }
@@ -76,7 +76,7 @@ public class MatchSetupSystem : Singleton<MatchSetupSystem>
         EnemySystem.Instance.Setup(MatchData.Instance.wave);
         HandManager hm = ServiceLocator.Get<HandManager>();
         hm.Setup(heroData.TraySize);
-        DrawCardGA drawCardGA = new(4);
+        DrawCardGA drawCardGA = new(5);
         ActionSystem.Instance.AddReaction(drawCardGA);
         ManaSystem.Instance.Setup(heroData.Sequence);
 

@@ -8,6 +8,7 @@ public class SkillCheckUI : MonoBehaviour
     private List<KeyCode> KeySequence = new List<KeyCode>();
     [SerializeField] private TMP_Text timer;
     [SerializeField] private Transform Frame;
+    [SerializeField] private Image icon;
     [SerializeField] private GameObject successVFX;
     [SerializeField] private GameObject failVFX;
 
@@ -20,18 +21,20 @@ public class SkillCheckUI : MonoBehaviour
     [SerializeField] private List<GameObject> keys = new List<GameObject>();
 
     private void Start() => ShowQTEPrompt(false);
-    public void Setup(List<KeyCode> keyCodes)
+    public void Setup(List<KeyCode> keyCodes, Card c)
     {
         // clear lists and set new values
         KeySequence = keyCodes;
         keys.Clear();
-
+        
+        icon.sprite = c.Icon;
         InstantiateKeys();
     }
     public void ShowQTEPrompt(bool active)
     {
         Frame.gameObject.SetActive(active);
         timer.gameObject.SetActive(active);
+        icon.gameObject.SetActive(active);
     }
     public void ClearQTE()
     {

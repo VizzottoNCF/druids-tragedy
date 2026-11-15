@@ -19,6 +19,8 @@ MonoBehaviour:
     rid: 8963080539564671073
   <UseAutoTarget>k__BackingField: 0
   <UseActionCasterAsTarget>k__BackingField: 1
+  <Title>k__BackingField: Espinhos
+  <Description>k__BackingField: Causa 5 de dano sempre que sofre dano
   references:
     version: 2
     RefIds:

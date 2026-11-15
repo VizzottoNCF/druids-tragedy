@@ -377,9 +377,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'voltar para menu
-
-    reiniciar'
+  m_text: "voltar para o \nmenu inicial"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1a48c1d66117aa842b840381e76938c4, type: 2}
   m_sharedMaterial: {fileID: -5994288385379392988, guid: 1a48c1d66117aa842b840381e76938c4, type: 2}

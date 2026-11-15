@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Counter
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   <Title>k__BackingField: Counter
-  <Description>k__BackingField: Hits back for 5 damage
+  <Description>k__BackingField: Contra-ataque por 5 de dano
   <Sequence>k__BackingField: 3
   <KeySequence>k__BackingField: 12010000110100001201000013010000
   <Image>k__BackingField: {fileID: 21300000, guid: f27a60715de68334b8018697538b735e, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: ae169edcc6a63054e8b9332e55fa5a20, type: 3}
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:

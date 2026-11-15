@@ -59,7 +59,7 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
 
 
         // setup variables
-        skillCheckUI.Setup(currentSequence);
+        skillCheckUI.Setup(currentSequence, quickTimeEventGA.Cards[0]);
         ShowQTEPrompt(true);
         float startTime = Time.time;
         float elapsedTime = 0f;

@@ -14,6 +14,7 @@ public class GameOverSystem : Singleton<GameOverSystem>
     {
         if (IsGameOver) return; // hero can "die" several times in one multi-hit attack
         IsGameOver = true;
+        FindAnyObjectByType<Pause>().CanPause = false;
 
         ActionSystem.Instance.Halt();
         gameOverPanel.SetActive(true);

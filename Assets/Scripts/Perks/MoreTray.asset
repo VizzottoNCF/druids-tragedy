@@ -19,6 +19,8 @@ MonoBehaviour:
     rid: 3969054543305769070
   <UseAutoTarget>k__BackingField: 0
   <UseActionCasterAsTarget>k__BackingField: 0
+  <Title>k__BackingField: Harmonia
+  <Description>k__BackingField: "Aumenta os espa\xE7os da bandeija em +1"
   references:
     version: 2
     RefIds:
