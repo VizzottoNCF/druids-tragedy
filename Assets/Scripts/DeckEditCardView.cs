@@ -4,13 +4,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+
+
 public class DeckEditCardView : CustomButtonScale
 {
     [SerializeField] private TMP_Text title;
     [SerializeField] private TMP_Text description;
     [SerializeField] private TMP_Text sequence;
     [SerializeField] private Image art;
-    [SerializeField] private Image background;   // usado para marcar selecao/bloqueio
+    [SerializeField] private Image background;
 
     public CardData Data { get; private set; }
     public int Index { get; private set; }
@@ -18,6 +20,7 @@ public class DeckEditCardView : CustomButtonScale
 
     private bool isSelected;
     private Action<DeckEditCardView> onClick;
+    
 
     public void Setup(CardData data, int index, Action<DeckEditCardView> clicked)
     {
@@ -30,7 +33,7 @@ public class DeckEditCardView : CustomButtonScale
         title.text = data.Title;
         description.text = data.Description;
         sequence.text = data.Sequence.ToString();
-        if (art != null) art.sprite = data.Image;
+        if (art != null) art.sprite = data.Icon;
         UpdateVisual();
     }
 
@@ -46,5 +49,10 @@ public class DeckEditCardView : CustomButtonScale
     {
         base.OnPointerClick(eventData);
         if (!Locked) onClick?.Invoke(this);
+    }
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        base.OnPointerEnter(eventData);
+        DeckEditSystem.Instance.ShowCardUI(Data);
     }
 }

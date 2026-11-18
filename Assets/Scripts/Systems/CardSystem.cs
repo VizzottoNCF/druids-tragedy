@@ -22,20 +22,6 @@ public class CardSystem : Singleton<CardSystem>
         handManager = ServiceLocator.Get<HandManager>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            DrawCardGA drawCardGA = new(1);
-            ActionSystem.Instance.Perform(drawCardGA);
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            DiscardAllCardsGA discardAllCardsGA = new();
-            ActionSystem.Instance.Perform(discardAllCardsGA);
-        }
-    }
-
     private void OnEnable()
     {
         ActionSystem.AttachPerformer<DrawCardGA>(DrawCardPerformer);

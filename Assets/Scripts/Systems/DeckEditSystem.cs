@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,16 +15,29 @@ public class DeckEditSystem : Singleton<DeckEditSystem>
     [SerializeField] private TMP_Text changesText;
     [SerializeField] private Button addButton;
     [SerializeField] private Button removeButton;
+    [SerializeField] private Button undoButton;
+    [SerializeField] private GameObject CardViewUI;
+    [SerializeField] private TMP_Text nomeGrande;
+    [SerializeField] private TMP_Text descGrande;
+    
 
     [Header("Config")]
     [SerializeField] private int maxChanges = 5;
     [SerializeField] private int minDeckSize = 8;
 
     public bool IsEditing { get; private set; }
+    private class Snapshot
+    {
+        public List<CardData> Deck;
+        public List<bool> Locked;
+        public List<CardData> Rewards;
+        public int ChangesMade;
+    }
 
     private List<CardData> workingDeck;
     private readonly List<DeckEditCardView> deckViews = new();
     private readonly List<DeckEditCardView> rewardViews = new();
+    private readonly Stack<Snapshot> history = new();
     private DeckEditCardView selectedReward, selectedDeckCard;
     private int changesMade, changesAllowed;
 
@@ -37,6 +51,8 @@ public class DeckEditSystem : Singleton<DeckEditSystem>
     {
         if (IsEditing) return;
         IsEditing = true;
+
+        history.Clear();
 
         // makes a copy and works on it, original deck is only modified upon confirmation
         workingDeck = new List<CardData>(MatchSetupSystem.Instance.GetDeck());
@@ -103,6 +119,8 @@ public class DeckEditSystem : Singleton<DeckEditSystem>
     {
         if (selectedReward == null || selectedDeckCard == null) return;
 
+        SaveSnapshot();
+
         CardData newCard = selectedReward.Data;
         int slot = deckViews.IndexOf(selectedDeckCard);
         workingDeck[slot] = newCard;
@@ -118,6 +136,8 @@ public class DeckEditSystem : Singleton<DeckEditSystem>
     public void AddSelectedRewardToDeck()
     {
         if (!IsEditing || !HasChangesLeft || selectedReward == null) return;
+
+        SaveSnapshot();
 
         CardData newCard = selectedReward.Data;
         workingDeck.Add(newCard);
@@ -151,6 +171,8 @@ public class DeckEditSystem : Singleton<DeckEditSystem>
     public void RemoveSelectedDeckCard()
     {
         if (!IsEditing || !HasChangesLeft || !CanRemove || selectedDeckCard == null) return;
+        
+        SaveSnapshot();
 
         int slot = deckViews.IndexOf(selectedDeckCard);
         workingDeck.RemoveAt(slot);
@@ -177,9 +199,36 @@ public class DeckEditSystem : Singleton<DeckEditSystem>
 
         MatchData.Instance.Deck = workingDeck;
 
+        history.Clear();
+
         ClearViews();
         panel.SetActive(false);
         IsEditing = false;
+    }
+
+    // connect to OnClick of undo button in UI
+    public void UndoLastChange()
+    {
+        if (!IsEditing || history.Count == 0) return;
+
+        Snapshot s = history.Pop();
+        workingDeck = new List<CardData>(s.Deck);
+        changesMade = s.ChangesMade;
+        selectedReward = selectedDeckCard = null;
+
+        // rebuilds views based on snapshot data
+        ClearViews();
+        for (int i = 0; i < workingDeck.Count; i++)
+        {
+            DeckEditCardView v = SpawnView(workingDeck[i], i, deckContainer, OnDeckCardClicked);
+            v.SetLocked(s.Locked[i]);
+            deckViews.Add(v);
+        }
+
+        for (int i = 0; i < s.Rewards.Count; i++)
+            rewardViews.Add(SpawnView(s.Rewards[i], i, rewardsContainer, OnRewardClicked));
+
+        UpdateUI();
     }
 
     private void ClearViews()
@@ -191,10 +240,30 @@ public class DeckEditSystem : Singleton<DeckEditSystem>
         rewardViews.Clear();
     }
 
+    private void SaveSnapshot()
+    {
+        history.Push(new Snapshot
+        {
+            Deck = new List<CardData>(workingDeck),
+            Locked = deckViews.Select(v => v.Locked).ToList(),
+            Rewards = rewardViews.Select(v => v.Data).ToList(),
+            ChangesMade = changesMade
+        });
+    }
+
     private void UpdateUI()
     {
-        changesText.text = $"Changes: {changesMade}/{maxChanges}";
+        changesText.text = $"Trocas: {changesMade}/{maxChanges}";
         addButton.interactable = HasChangesLeft && selectedReward != null;
         removeButton.interactable = HasChangesLeft && CanRemove && selectedDeckCard != null;
+        undoButton.interactable = history.Count > 0;
+    }
+
+    public void ShowCardUI(CardData data)
+    {
+        Card c = new Card(data);
+        CardViewUI.GetComponent<CardView>().Setup(c);
+        nomeGrande.text = data.Title;
+        descGrande.text = data.Description;
     }
 }
