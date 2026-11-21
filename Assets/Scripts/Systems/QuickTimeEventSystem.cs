@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
@@ -13,6 +14,8 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
     [SerializeField] private List<KeyCode> keyInputs;
     private List<KeyCode> currentSequence = new List<KeyCode>();
     private KeyCode pressedKey = KeyCode.None;
+    private float timeSinceLastWrongKeyPress = 0f;
+    private float timeTolerance = 0.35f;
 
     public bool succededQTE = true;
 
@@ -57,12 +60,26 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
             });
         }
 
+        // delay consecutive QTEs to avoid accidental key presses
+        if (Time.time - timeSinceLastWrongKeyPress < timeTolerance)
+        {
+            yield return new WaitForSeconds(timeTolerance);
+        }
 
         // setup variables
         skillCheckUI.Setup(currentSequence, quickTimeEventGA.Cards[0]);
         ShowQTEPrompt(true);
         float startTime = Time.time;
         float elapsedTime = 0f;
+
+
+        // automatically end QTE in case all enemy views are already dead
+        if (EnemySystem.Instance.Enemies.Count == 0)
+        {
+            OnQTESuccess();
+            yield break;
+        }
+
 
 
         for (int i = 0; i < (currentSequence.Count); i++)
@@ -85,38 +102,33 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
                 if (Input.anyKeyDown)
                 {
                     // check if key is valid
+                    pressedKey = KeyCode.None;
                     foreach (KeyCode key in keyInputs)
                     {
-                        if (Input.GetKeyDown(key))
+                        if (Input.GetKeyDown(key)) { pressedKey = key; break; }
+                    }
+
+
+                    // ignore non valid  keys
+                    if (pressedKey != KeyCode.None)
+                    {
+                        bool correct = pressedKey == currentSequence[i];
+
+
+                        //tutorial: wrong keys are ignored
+                        if (TutorialSystem.Instance != null)
                         {
-                            pressedKey = key;
+                            if (correct) { OnKeyCorrect(i); keyPressed = true; }
                         }
-                    }
-                    if (pressedKey == KeyCode.None) { continue; }
 
-                    //tutorial version
-                    if (TutorialSystem.Instance != null)
-                    {
-                        if (Input.GetKeyDown(pressedKey) == Input.GetKeyDown(currentSequence[i])) 
-                        { 
-                            OnKeyCorrect(i);
-                            keyPressed = true;
-                        }
-                    }
-
-                    //normal version
-                    else
-                    {
-                        keyPressed = true;
-
-                        if (Input.GetKeyDown(pressedKey) == Input.GetKeyDown(currentSequence[i])) { OnKeyCorrect(i); }
+                        // default
                         else
                         {
-                            OnKeyWrong(pressedKey);
-                            yield break;
+                            keyPressed = true;
+                            if (correct) OnKeyCorrect(i);
+                            else { OnKeyWrong(pressedKey); yield break; }
                         }
                     }
-
                 }
 
 
@@ -143,11 +155,14 @@ public class QuickTimeEventSystem : Singleton<QuickTimeEventSystem>
     {
         if (TutorialSystem.Instance != null) return;
 
+        timeSinceLastWrongKeyPress = Time.time;
+
         succededQTE = false;
 
         skillCheckUI.ClearQTE();
         skillCheckUI.FailQTEVisualFX();
         ShowQTEPrompt(false);
+
     }
 
     private void OnQTESuccess()

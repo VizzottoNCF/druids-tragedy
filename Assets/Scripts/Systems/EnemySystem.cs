@@ -61,7 +61,6 @@ public class EnemySystem : Singleton<EnemySystem>
                 continue;
             }
 
-            
 
             // attack hero
             int attackCount = enemy.Behavior != null ? enemy.Behavior.GetAttackCount(enemy) : 1;
@@ -89,7 +88,7 @@ public class EnemySystem : Singleton<EnemySystem>
         if (attacker == null) { yield break; }
 
 
-        Vector3 targetPos = new(0,-2,0);
+        Vector3 targetPos = new(0, -2, 0);
         Vector3 originalPos = attacker.transform.position;
         Tween tween = attacker.transform.DOMove(targetPos, 0.15f);
         yield return tween.WaitForCompletion();
@@ -102,9 +101,10 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         yield return enemyBoardView.RemoveEnemy(killEnemyGA.EnemyView);
     }
-
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {
+        foreach (var e in enemyBoardView.EnemyViews) e.UpdateAttackText();
+
         if (enemyBoardView.EnemyViews.Count == 0)
         {
             Debug.Log("No enemies left");

@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b564f0c7055463448a72604320ae314d, type: 3}
   m_Name: Strength
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  <Title>k__BackingField: "For\xE7a"
+  <Title>k__BackingField: Vigor
   <Description>k__BackingField: Aumenta todo dano que causa em +2
   <Sequence>k__BackingField: 1
   <KeySequence>k__BackingField: 14010000110100001201000013010000
-  <Image>k__BackingField: {fileID: 21300000, guid: f27a60715de68334b8018697538b735e, type: 3}
-  <Icon>k__BackingField: {fileID: 21300000, guid: ae169edcc6a63054e8b9332e55fa5a20, type: 3}
+  <Image>k__BackingField: {fileID: 21300000, guid: e0fc025ed51829540b18fd408a5dc95f, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: f593fc7ba74a8984bbbfb4d19c9d6572, type: 3}
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:

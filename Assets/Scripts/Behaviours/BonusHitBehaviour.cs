@@ -13,4 +13,5 @@ public class BonusHitBehavior : EnemyBehavior
         bool isBonusTurn = enemy.TurnCount % bonusEveryNTurns == 0;
         return baseHits + (isBonusTurn ? bonusHits : 0);
     }
+    public override int GetAttackCountForTurn(int turn) => baseHits + (turn % bonusEveryNTurns == 0 ? bonusHits : 0);
 }

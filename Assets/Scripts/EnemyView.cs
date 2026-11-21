@@ -16,5 +16,9 @@ public class EnemyView : CombatantView
         UpdateAttackText();
         SetupBase(enemyData.Health, enemyData.Image);
     }
-    private void UpdateAttackText() => attackText.text = $"ATK: {AttackPower}";
+    public void UpdateAttackText()
+    {
+        int hits = Behavior != null ? Behavior.GetAttackCountForTurn(TurnCount + 1) : 1;
+        attackText.text = hits > 1 ? $"{AttackPower} x {hits}" : $"{AttackPower}";
+    }
 }

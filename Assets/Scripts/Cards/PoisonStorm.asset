@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PoisonStorm
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   <Title>k__BackingField: Frasco Venenoso
-  <Description>k__BackingField: Cause +4 de veneno em todos inimigos
+  <Description>k__BackingField: Cause +5 de veneno em todos inimigos
   <Sequence>k__BackingField: 2
   <KeySequence>k__BackingField: 14010000130100001401000013010000
   <Image>k__BackingField: {fileID: 21300000, guid: 998f6adb004d928448b345471b3c1423, type: 3}
@@ -41,4 +41,4 @@ MonoBehaviour:
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         statusEffectType: 1
-        stackCount: 4
+        stackCount: 5

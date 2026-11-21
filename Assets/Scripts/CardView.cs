@@ -96,6 +96,7 @@ public class CardView : MonoBehaviour
     }
     private void OnMouseUp()
     {
+        if (TutorialSystem.Active && !TutorialSystem.Instance.CanUseCard(Card)) return;
         if (!Interactions.Instance.PlayerCanInteract()) return;
         if (inTray) return;
         HandManager service = ServiceLocator.Get<HandManager>();

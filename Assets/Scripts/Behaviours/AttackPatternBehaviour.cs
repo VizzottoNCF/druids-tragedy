@@ -11,4 +11,5 @@ public class AttackPatternBehavior : EnemyBehavior
     {
         return enemy.TurnCount % everyNTurns == 0 ? hitsPerAttack : 0;
     }
+    public override int GetAttackCountForTurn(int turn) => turn % everyNTurns == 0 ? hitsPerAttack : 0;
 }

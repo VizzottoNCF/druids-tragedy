@@ -83,7 +83,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.5, y: 750}
+  m_AnchoredPosition: {x: -0.62503, y: 694.8}
   m_SizeDelta: {x: 1.25, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2269124813216204727
@@ -127,7 +127,6 @@ MonoBehaviour:
   segmentPrefab: {fileID: 2535474192986305661, guid: c0dfe0177b21d8f4184a7e47d4796bab, type: 3}
   container: {fileID: 9006737861320601315}
   healthPerSegment: 50
-  fullSegmentWidth: 100
   fillDuration: 0.25
   trailDelay: 0.3
   trailDuration: 0.4
@@ -189,7 +188,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7621208120209054239, guid: 7b27b4ea896db714d91de6e73c5db953, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4278190080
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 8823046275191217140, guid: 7b27b4ea896db714d91de6e73c5db953, type: 3}
       propertyPath: m_AnchoredPosition.y

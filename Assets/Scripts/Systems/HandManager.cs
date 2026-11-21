@@ -38,8 +38,6 @@ public class HandManager : MonoBehaviour
         if (handCards.Count >= MaxHandSize) { Debug.LogError("HAND SIZE CAPPED"); yield break; }
         if (card == null) { Debug.LogError("Null card"); yield break; }
 
-        //Debug.Log($"{card.Title} // {card==null}");
-
         CardViewCreator service = ServiceLocator.Get<CardViewCreator>();
 
         GameObject g = service.CreateCardView(card, position, rotation).gameObject;
