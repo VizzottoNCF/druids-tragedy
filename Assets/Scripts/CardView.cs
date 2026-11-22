@@ -12,6 +12,7 @@ public class CardView : MonoBehaviour
 
     [SerializeField] private GameObject Wrapper;
     [SerializeField] private LayerMask dropLayer;
+    [SerializeField] private LayerMask trayLayer;
 
     public Card Card { get; private set; }
     public bool inTray { get; private set; }
@@ -56,9 +57,14 @@ public class CardView : MonoBehaviour
     {
         if (!Interactions.Instance.PlayerCanInteract()) return;
         if (TutorialSystem.Active && !TutorialSystem.Instance.CanUseCard(Card)) return;
-        
+
+
+        dragStartPosition = transform.position;
+        dragStartRotation = transform.rotation;
+
         if (inTray)
         {
+
             // take off card from tray and put it back in hand
             StartCoroutine(CardSystem.Instance.RemoveCardFromTray(Card, this.gameObject));
             inTray = false;
@@ -68,17 +74,12 @@ public class CardView : MonoBehaviour
             HandManager hm = ServiceLocator.Get<HandManager>();
             hm.SelectedCard = this.gameObject;
 
-            if (Card.ManualEffect != null)
-            {
-                ManualTargetSystem.Instance.StartTargetting(transform.position);
-            }
+            if (Card.ManualEffect != null) ManualTargetSystem.Instance.StartTargetting(transform.position);
             else
             {
                 Interactions.Instance.PlayerIsDragging = true;
                 Wrapper.SetActive(true);
                 ServiceLocator.Get<CardViewHoverSystem>().Hide();
-                dragStartPosition = transform.position;
-                dragStartRotation = transform.rotation;
 
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
@@ -92,13 +93,22 @@ public class CardView : MonoBehaviour
 
         if (Card.ManualEffect != null) return;
 
+        // dont start drag on tray
+        if (inTray) return;
+        if (dragStartPosition.x < -8f) return; // cards on tray have X as -9f
+
         transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
     }
     private void OnMouseUp()
     {
         if (TutorialSystem.Active && !TutorialSystem.Instance.CanUseCard(Card)) return;
         if (!Interactions.Instance.PlayerCanInteract()) return;
+
+        // tray is handled solely by mouse down
         if (inTray) return;
+        if (dragStartPosition.x < -8f) return; // cards on tray have X as -9f
+
+
         HandManager service = ServiceLocator.Get<HandManager>();
         if (Card.ManualEffect != null)
         {
@@ -129,5 +139,8 @@ public class CardView : MonoBehaviour
             }
             Interactions.Instance.PlayerIsDragging = false;
         }
+
+        StartCoroutine(service.UpdateCardPosition(0.15f));
+        StartCoroutine(service.UpdateTrayCardPosition(0.15f));
     }
 }

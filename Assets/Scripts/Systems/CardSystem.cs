@@ -58,6 +58,7 @@ public class CardSystem : Singleton<CardSystem>
 
         // adds card to the tray
         CardTraySystem.Instance.CardTray.Add(new(card, target));
+
         yield return null;
     }
     public IEnumerator RemoveCardFromTray(Card card, GameObject view)

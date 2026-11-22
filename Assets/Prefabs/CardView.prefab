@@ -814,10 +814,14 @@ MonoBehaviour:
   cardDescription: {fileID: 6801520839510236533}
   cardSequence: {fileID: 5995764205806556719}
   imageSR: {fileID: 5453453664071075761}
+  image: {fileID: 0}
   Wrapper: {fileID: 6095956555539077370}
   dropLayer:
     serializedVersion: 2
     m_Bits: 64
+  trayLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!210 &5328347793109285499
 SortingGroup:
   m_ObjectHideFlags: 0
