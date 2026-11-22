@@ -16,4 +16,5 @@ Contribuições ao projeto são bem-vindas! Sinta-se à vontade para:
 - Reportar bugs
 - Sugerir novas funcionalidades
 - Melhorar a documentação
+
 Contato: **vizzottodeveloper@gmail.com**
