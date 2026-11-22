@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db9f096a5a1737147bd0166f994eccbc, type: 3}
   m_Name: Rapido
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  <Image>k__BackingField: {fileID: 3963103211916885951, guid: ff1b0c60436425c40b1f89b38a224151, type: 3}
+  <Image>k__BackingField: {fileID: 21300000, guid: 7f5345de34e13d34590f142327384762, type: 3}
   <Health>k__BackingField: 20
   <AttackPower>k__BackingField: 7
   <Behavior>k__BackingField:

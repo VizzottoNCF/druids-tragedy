@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db9f096a5a1737147bd0166f994eccbc, type: 3}
   m_Name: TutorialEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  <Image>k__BackingField: {fileID: 3365029792430603138, guid: 33402646230033b4b84a031f5aded2de, type: 3}
+  <Image>k__BackingField: {fileID: 21300000, guid: 41c56ed35e8654a4cbb68f74497ff376, type: 3}
   <Health>k__BackingField: 25
   <AttackPower>k__BackingField: 5
   <Behavior>k__BackingField:
