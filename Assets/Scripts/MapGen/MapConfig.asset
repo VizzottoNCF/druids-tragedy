@@ -29,6 +29,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 28f4ba0ffc724c24ebc545d2ea6fd060, type: 2}
   - {fileID: 11400000, guid: 81a001680cfcfdd41af66e5d6b8da3bd, type: 2}
   - {fileID: 11400000, guid: ecdd48f76f2006e4aaa6568edb663234, type: 2}
+  - {fileID: 11400000, guid: a7fc55e0c5866ec43b418496969b7830, type: 2}
   BossWaves:
   - {fileID: 11400000, guid: b7d7b642af5c2934b955a78f710055cd, type: 2}
   RewardSets:
@@ -39,6 +40,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 633b558b9d8ab8742afd814280fed321, type: 2}
   - {fileID: 11400000, guid: 1d4994c394b3c8548b03b82970c699bb, type: 2}
   - {fileID: 11400000, guid: 89b129dc02bc570498c086e631d48dea, type: 2}
+  ShopOptions: 2
   Horizontal: 0
   FloorSpacing: 2.5
   ColumnSpacing: 1.8

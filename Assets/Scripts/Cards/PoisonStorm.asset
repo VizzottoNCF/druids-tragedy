@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   <Title>k__BackingField: Frasco Venenoso
   <Description>k__BackingField: Cause +5 de veneno em todos inimigos
-  <Sequence>k__BackingField: 2
-  <KeySequence>k__BackingField: 14010000130100001401000013010000
+  <Sequence>k__BackingField: 1
+  <KeySequence>k__BackingField: 14010000130100001301000014010000
   <Image>k__BackingField: {fileID: 21300000, guid: 998f6adb004d928448b345471b3c1423, type: 3}
   <Icon>k__BackingField: {fileID: 21300000, guid: 9cc54912a15051a4aaacec1660e28a0f, type: 3}
   <ManualTargetEffect>k__BackingField:
