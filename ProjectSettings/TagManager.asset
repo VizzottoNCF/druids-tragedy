@@ -8,12 +8,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - DropArea
   - EnemyView
-  - 
+  - TrayArea
   - 
   - 
   - 
@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: UI
+    uniqueID: 588326109
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
